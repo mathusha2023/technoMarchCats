@@ -11,7 +11,7 @@ from handlers import include_routers
 async def main():
     bot = Bot(token=config.BOT_TOKEN, default=DefaultBotProperties(parse_mode="html"))
     dp = Dispatcher(storage=MemoryStorage())
-    include_routers(dp)
+    include_routers(dp)  # добавляем все обработчики команд
     await bot.delete_webhook(drop_pending_updates=True)
     try:
         await dp.start_polling(bot)
@@ -20,6 +20,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    db_session.global_init(config.DATABASE_URL)
+    db_session.global_init(config.DATABASE_URL)  # инициализация базы данных
     logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
