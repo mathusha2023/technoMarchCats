@@ -5,7 +5,8 @@ import config
 from data import db_session
 from data.users import User
 import strings
-from keyboards import contacts_keyboard
+from filters import AdminFilter
+import keyboards
 
 router = Router()
 
@@ -36,4 +37,14 @@ async def help_(message: Message):
 
 @router.message(Command("about"))
 async def about(message: Message):
-    await message.answer(strings.INFO, reply_markup=contacts_keyboard())
+    await message.answer(strings.INFO, reply_markup=keyboards.contacts_keyboard())
+
+
+@router.message(Command("admin"), AdminFilter())
+async def admin(message: Message):
+    await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
+
+
+@router.message(Command("admin"))
+async def admin(message: Message):
+    await message.answer("Данная команда доступна только администраторам!")

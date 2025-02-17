@@ -1,0 +1,1 @@
+from .animals import callback_router as animals_callback_router
