@@ -1,0 +1,31 @@
+name: "Cats-bot"
+
+services:
+
+  database:
+    container_name: database
+    image: postgres
+    restart: unless-stopped
+    env_file:
+      - .env.database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      - database
+
+
+volumes:
+  db_data:
+
