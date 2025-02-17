@@ -1,0 +1,2 @@
+from .about_keyboard import about_keyboard
+from .contacts_keyboard import contacts_keyboard

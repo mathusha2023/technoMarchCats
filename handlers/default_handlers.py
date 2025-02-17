@@ -4,6 +4,8 @@ from aiogram.filters import Command
 import config
 from data import db_session
 from data.users import User
+import strings
+from keyboards import contacts_keyboard
 
 router = Router()
 
@@ -21,4 +23,17 @@ async def start(message: Message):
         session.add(user)
         session.commit()
 
-    await message.answer("Hello!")
+    await message.answer(strings.GREETING)
+
+
+@router.message(Command("help"))
+async def help_(message: Message):
+    s = "Вот список доступных команд:\n"
+    for command in config.BOT_COMMANDS:
+        s += f"/{command} - {config.BOT_COMMANDS[command]}\n"
+    await message.answer(s)
+
+
+@router.message(Command("about"))
+async def about(message: Message):
+    await message.answer(strings.INFO, reply_markup=contacts_keyboard())

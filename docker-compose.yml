@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env.database
-    volumes:
-      - db_data:/var/lib/postgresql/data
+#    volumes:
+#      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     expose:
