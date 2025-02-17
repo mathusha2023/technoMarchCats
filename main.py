@@ -6,6 +6,7 @@ import logging
 import config
 from data import db_session
 from handlers import include_routers
+from set_commands import set_commands
 
 
 async def main():
@@ -13,6 +14,7 @@ async def main():
     dp = Dispatcher(storage=MemoryStorage())
     include_routers(dp)  # добавляем все обработчики команд
     await bot.delete_webhook(drop_pending_updates=True)
+    await set_commands(bot)
     try:
         await dp.start_polling(bot)
     except asyncio.exceptions.CancelledError:

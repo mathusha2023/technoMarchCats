@@ -1,6 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
+import config
 from data import db_session
 from data.users import User
 
@@ -15,6 +16,8 @@ async def start(message: Message):
         user = User()
         user.id = user_id
         user.username = message.from_user.first_name
+        if user_id == config.SUPERADMIN_ID:
+            user.accessLevel = 3
         session.add(user)
         session.commit()
 
