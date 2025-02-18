@@ -1,0 +1,1 @@
+from .media_group_middleware import MediaGroupMiddleware

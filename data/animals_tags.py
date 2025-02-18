@@ -10,4 +10,4 @@ class AnimalTag(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     tag = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-    animals = orm.relationship('Animal', secondary=AnimalToAnimalTag, backref='animalTags')
+    animals = orm.relationship('Animal', secondary=AnimalToAnimalTag, back_populates="tags")

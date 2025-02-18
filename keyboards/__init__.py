@@ -1,3 +1,4 @@
+from aiogram.types import ReplyKeyboardRemove
 from .about_keyboard import about_keyboard
 from .contacts_keyboard import contacts_keyboard
 from .admin_menu_keyboard import admin_menu_keyboard

@@ -8,4 +8,4 @@ class AnimalImage(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     animalId = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("animals.id"))
-    image = sqlalchemy.Column(sqlalchemy.String)
+    image = sqlalchemy.Column(sqlalchemy.String)  # храним не бинарники изображений, а их telegram id

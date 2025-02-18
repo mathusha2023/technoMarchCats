@@ -13,7 +13,7 @@ class Animal(SqlAlchemyBase):
     birthDate = sqlalchemy.Column(sqlalchemy.Date)
     description = sqlalchemy.Column(sqlalchemy.String)
     images = orm.relationship("AnimalImage")
-    tags = orm.relationship('AnimalTag', secondary=AnimalToAnimalTag, backref='animals')
+    tags = orm.relationship('AnimalTag', secondary=AnimalToAnimalTag, back_populates="animals")
 
 
     # возраст животного в годах
