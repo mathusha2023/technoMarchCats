@@ -3,3 +3,4 @@ from .about_keyboard import about_keyboard
 from .contacts_keyboard import contacts_keyboard
 from .admin_menu_keyboard import admin_menu_keyboard
 from .admin_animals_keyboard import admin_animals_keyboard
+from .select_animal_gender_keyboard import select_animal_gender_keyboard

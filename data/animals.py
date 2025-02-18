@@ -10,6 +10,7 @@ class Animal(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
+    gender = sqlalchemy.Column(sqlalchemy.Integer)  # 0 - мальчик, 1 - девочка
     birthDate = sqlalchemy.Column(sqlalchemy.Date)
     description = sqlalchemy.Column(sqlalchemy.String)
     images = orm.relationship("AnimalImage")

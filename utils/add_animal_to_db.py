@@ -12,6 +12,7 @@ def add_animal_to_db(data):
     else:
         i = a.id + 1
     name = data["name"]
+    gender = data["gender"]
     birthday = data["birthday"]
     description = data["description"]
     photos = data["photos"]
@@ -20,7 +21,7 @@ def add_animal_to_db(data):
         image.animalId = i
         image.image = photo
         session.add(image)
-    animal = Animal(name=name, birthDate=birthday, description=description)
+    animal = Animal(name=name, birthDate=birthday, description=description, gender=gender)
     session.add(animal)
     session.commit()
 
