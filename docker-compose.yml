@@ -26,6 +26,6 @@ services:
       - database
 
 
-volumes:
-  db_data:
-
+#volumes:
+#  db_data:
+#

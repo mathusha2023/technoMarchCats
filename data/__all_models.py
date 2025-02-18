@@ -1,1 +1,1 @@
-from . import users
+from . import users, animal_to_animal_tag, animals, animals_tags, animals_images
