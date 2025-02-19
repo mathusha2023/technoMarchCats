@@ -8,3 +8,4 @@ class AddAnimalStates(StatesGroup):
     describing = State()
     adding_images = State()
     adding_tags = State()
+    confirm_adding = State()
