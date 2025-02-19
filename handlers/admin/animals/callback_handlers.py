@@ -21,5 +21,5 @@ async def back_callback(callback: CallbackQuery):
 @router.callback_query(F.data == "add_animal")
 async def add_animal_callback(callback: CallbackQuery, state: FSMContext):
     await state.set_state(AddAnimalStates.naming)
-    await callback.message.answer("Как зовут нашего нового котика?", reply_markup=keyboards.ReplyKeyboardRemove())
+    await callback.message.answer("Как зовут нашего нового котика?", reply_markup=keyboards.cancel_keyboard())
     await callback.answer()

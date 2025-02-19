@@ -6,6 +6,7 @@ from data import db_session
 import keyboards
 import strings
 from data.animals_tags import AnimalTag
+from filters import StatesGroupFilter
 from middlewares import MediaGroupMiddleware
 from states import AddAnimalStates
 from utils.add_animal_to_db import add_animal_to_db
@@ -13,6 +14,13 @@ from utils.generate_animal_card_by_state import generate_animal_card_by_state
 
 router = Router()
 router.message.middleware(MediaGroupMiddleware())
+
+
+@router.message(F.text == "Отмена", StatesGroupFilter(AddAnimalStates))  # сработает при любом состоянии добавления животного
+async def cancel(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Добавление котика отменено", reply_markup=keyboards.ReplyKeyboardRemove())
+    await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
 @router.message(F.text, AddAnimalStates.naming)
@@ -28,7 +36,7 @@ async def adding_gender(message: Message, state: FSMContext):
     await state.update_data({"gender": int(message.text) - 1})
     await state.set_state(AddAnimalStates.adding_birthday)
     await message.answer("Отлично! Когда у нашего нового питомца день рождения? Введите дату в формате dd.mm.yyyy",
-                         reply_markup=keyboards.ReplyKeyboardRemove())
+                         reply_markup=keyboards.cancel_keyboard())
 
 
 @router.message(F.text, AddAnimalStates.adding_gender)
