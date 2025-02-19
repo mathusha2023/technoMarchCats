@@ -25,7 +25,12 @@ async def start(message: Message, state: FSMContext):
         session.add(user)
         session.commit()
     await state.clear()
-    await message.answer(strings.GREETING, reply_markup=keyboards.ReplyKeyboardRemove())
+    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+
+
+@router.message(Command("cats"))
+async def cats(message: Message, state: FSMContext):
+    await message.answer("KOTI", reply_markup=keyboards.ReplyKeyboardRemove())
 
 
 @router.message(Command("help"))

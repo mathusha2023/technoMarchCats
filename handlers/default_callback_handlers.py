@@ -1,16 +1,31 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 import strings
-from keyboards import contacts_keyboard, about_keyboard
+import keyboards
 
 router = Router()
 
 
 @router.callback_query(F.data == "contact")
 async def contact_callback(callback: CallbackQuery):
-    await callback.message.edit_text(strings.CONTACTS, reply_markup=about_keyboard())
+    await callback.message.edit_text(strings.CONTACTS, reply_markup=keyboards.about_keyboard())
 
 
 @router.callback_query(F.data == "about")
-async def back_callback(callback: CallbackQuery):
-    await callback.message.edit_text(strings.INFO, reply_markup=contacts_keyboard())
+async def about_callback(callback: CallbackQuery):
+    await callback.message.edit_text(strings.INFO, reply_markup=keyboards.contacts_keyboard())
+
+
+@router.callback_query(F.data == "start_contact")
+async def start_contact_callback(callback: CallbackQuery):
+    await callback.message.edit_text(strings.CONTACTS, reply_markup=keyboards.to_start_menu_keyboard())
+
+
+@router.callback_query(F.data == "start_about")
+async def start_about_callback(callback: CallbackQuery):
+    await callback.message.edit_text(strings.INFO, reply_markup=keyboards.to_start_menu_keyboard())
+
+
+@router.callback_query(F.data == "start")
+async def start_callback(callback: CallbackQuery):
+    await callback.message.edit_text(strings.GREETING, reply_markup=keyboards.start_keyboard())

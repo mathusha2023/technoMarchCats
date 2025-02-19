@@ -13,7 +13,7 @@ from utils.add_base_tags_to_db import add_base_tags_to_db
 async def main():
     bot = Bot(token=config.BOT_TOKEN, default=DefaultBotProperties(parse_mode="html"))
     dp = Dispatcher(storage=MemoryStorage())
-    include_routers(dp)  # добавляем все обработчики команд
+    include_routers(dp)  # добавляем все обработчики событий
     await bot.delete_webhook(drop_pending_updates=True)
     await set_commands(bot)  # создаем боковое меню бота с командами
     try:
