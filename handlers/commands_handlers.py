@@ -28,11 +28,6 @@ async def start(message: Message, state: FSMContext):
     await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
 
 
-@router.message(Command("cats"))
-async def cats(message: Message, state: FSMContext):
-    await message.answer("KOTI", reply_markup=keyboards.ReplyKeyboardRemove())
-
-
 @router.message(Command("help"))
 async def help_(message: Message, state: FSMContext):
     s = "Вот список доступных команд:\n"
@@ -57,4 +52,5 @@ async def admin(message: Message, state: FSMContext):
 @router.message(Command("admin"))
 async def admin(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer("Данная команда доступна только администраторам!", reply_markup=keyboards.ReplyKeyboardRemove())
+    await message.answer("Данная команда доступна только администраторам!",
+                         reply_markup=keyboards.ReplyKeyboardRemove())
