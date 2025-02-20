@@ -1,23 +1,72 @@
 from aiogram.types import Message
+from datetime import date, timedelta
+from sqlalchemy import and_
+from functools import reduce
+from data.animals_filters import AnimalFilter
 from data.db_session import create_session
 from data.users import User
 from data.animals import Animal
 from aiogram.utils.media_group import MediaGroupBuilder
-
 from utils.get_text_gender import get_text_gender
 
 
 async def generate_next_animal_card(user_id, message: Message):
     session = create_session()
     user = session.query(User).where(User.id == user_id).first()
-    animal = session.query(Animal).where(Animal.id == user.lastWatchedAnimal + 1).first()
-    if animal is None:
-        animal = session.query(Animal).where(Animal.id == 1).first()
-    if animal is None:
-        return
+    animal_filter: AnimalFilter = user.filter
+    min_date = date.today() - timedelta(days=animal_filter.maxAge * 365)
+    max_date = date.today() - timedelta(days=animal_filter.minAge * 365)
+
+    s = []
+    for tag in animal_filter.tags:
+        a = set()
+        for tags_animal in tag.animals:
+            a.add(tags_animal.id)
+        s.append(a)
+
+    if s:  # получаем айди животных, которые подойдут пользователю по фильтрам
+        s = [i for i in reduce(lambda x, y: x.intersection(y), s)]
+
+    if s:  # если теги есть
+        if animal_filter.gender > 1:  # фильтр для любого пола
+            condition = and_(Animal.id > user.lastWatchedAnimal, Animal.birthDate.between(min_date, max_date),
+                             Animal.id.in_(s))
+
+        else:  # фильтр для конкретного пола
+            condition = and_(Animal.id > user.lastWatchedAnimal, Animal.birthDate.between(min_date, max_date),
+                             Animal.gender == animal_filter.gender, Animal.id.in_(s))
+    else:
+        if animal_filter.gender > 1:  # фильтр для любого пола
+            condition = and_(Animal.id > user.lastWatchedAnimal, Animal.birthDate.between(min_date, max_date))
+
+        else:  # фильтр для конкретного пола
+            condition = and_(Animal.id > user.lastWatchedAnimal, Animal.birthDate.between(min_date, max_date),
+                             Animal.gender == animal_filter.gender)
+
+    animal = session.query(Animal).where(condition).first()
+
+    if animal is None:  # может быть животное было последним в списке, надо попробовать поискать с самого начала
+
+        if s:  # если теги есть
+            if animal_filter.gender > 1:  # фильтр для любого пола
+                condition = and_(Animal.birthDate.between(min_date, max_date), Animal.id.in_(s))
+
+            else:  # фильтр для конкретного пола
+                condition = and_(Animal.birthDate.between(min_date, max_date), Animal.gender == animal_filter.gender,
+                                 Animal.id.in_(s))
+        else:
+            if animal_filter.gender > 1:  # фильтр для любого пола
+                condition = Animal.birthDate.between(min_date, max_date)
+
+            else:  # фильтр для конкретного пола
+                condition = and_(Animal.birthDate.between(min_date, max_date), Animal.gender == animal_filter.gender)
+
+        animal = session.query(Animal).where(condition).first()
+
+    if animal is None:  # животное все равно не найдено, значит, под такой фильтр животного не существует
+        return await message.answer("Котиков под ваши фильтры не найдено:( Попробуйте изменить набор значений в фильтре")
     user.lastWatchedAnimal = animal.id
     session.commit()
-
 
     text = f"""Привет! Я {animal.name}, {get_text_gender(animal.gender)}, мне {animal.get_age()} лет.\n{animal.description}\nТеги: {", ".join(map(lambda x: x.tag, animal.tags))}"""
 
