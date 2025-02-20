@@ -4,8 +4,12 @@ from aiogram.types import Message
 from aiogram.filters import Command
 import keyboards
 import strings
+from data.animals_filters import AnimalFilter
+from data.db_session import create_session
+from data.users import User
 from filters import StatesGroupFilter
 from states import WatchAnimalsStates
+from utils.generate_animal_filter_message import generate_animal_filter_message
 from utils.generate_next_animal_card import generate_next_animal_card
 
 router = Router()
@@ -26,6 +30,14 @@ async def cats(message: Message, state: FSMContext):
     await generate_next_animal_card(message.from_user.id, message)
 
 
-@router.message(F.text == "Следующий", WatchAnimalsStates.watching)
+@router.message(F.text == "Следующий котик", WatchAnimalsStates.watching)
 async def next_cat(message: Message):
     await generate_next_animal_card(message.from_user.id, message)
+
+
+@router.message(F.text == "Кошачий фильтр", WatchAnimalsStates.watching)
+async def cats_filter(message: Message):
+    session = create_session()
+    animal_filter: AnimalFilter = session.query(User).where(User.id == message.from_user.id).first().filter
+    await generate_animal_filter_message(message, animal_filter)
+    

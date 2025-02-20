@@ -4,6 +4,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 import config
 from data import db_session
+from data.animals_filters import AnimalFilter
 from data.users import User
 import strings
 from filters import AdminFilter
@@ -22,6 +23,9 @@ async def start(message: Message, state: FSMContext):
         user.username = message.from_user.first_name
         if user_id == config.SUPERADMIN_ID:
             user.accessLevel = 3
+        user_filter = AnimalFilter()
+        user.filter = user_filter
+        session.add(user_filter)
         session.add(user)
         session.commit()
     await state.clear()
@@ -38,14 +42,14 @@ async def help_(message: Message, state: FSMContext):
 
 
 @router.message(Command("about"))
-async def about(message: Message, state: FSMContext):
-    await state.clear()
+async def about(message: Message):
     await message.answer(strings.INFO, reply_markup=keyboards.contacts_keyboard())
 
 
 @router.message(Command("admin"), AdminFilter())
 async def admin(message: Message, state: FSMContext):
     await state.clear()
+    await message.answer("Добро пожаловать, админ!", reply_markup=keyboards.ReplyKeyboardRemove())
     await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
