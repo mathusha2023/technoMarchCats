@@ -16,7 +16,6 @@ class Animal(SqlAlchemyBase):
     images = orm.relationship("AnimalImage", backref="animals", passive_deletes=True)
     tags = orm.relationship('AnimalTag', secondary=AnimalToAnimalTag, back_populates="animals")
 
-
     # возраст животного в годах
     def get_age(self):
         now = date.today()

@@ -20,7 +20,7 @@ async def delete_animal(message: Message, state: FSMContext):
         return await message.answer(f"Животного с ID {animal_id} не существует! Введите существующий ID", reply_markup=message.reply_markup)
     await state.set_state(DeleteAnimalStates.confirm_delete)
     await state.update_data({"session": session, "animal": animal})
-    await message.answer(f"Вы уверены, что хотите удалить {animal.name} с id {animal.id} из базы данных?", reply_markup=keyboards.yes_or_no_keyboard())
+    await message.answer(f"Вы уверены, что хотите удалить {animal.name} с ID {animal.id} из базы данных?", reply_markup=keyboards.yes_or_no_keyboard())
 
 
 @router.message(DeleteAnimalStates.index_input)

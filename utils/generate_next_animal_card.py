@@ -24,10 +24,8 @@ async def generate_next_animal_card(user_id, message: Message):
             a.add(tags_animal.id)
         s.append(a)
 
-    if s:  # получаем айди животных, которые подойдут пользователю по фильтрам
-        s = [i for i in reduce(lambda x, y: x.intersection(y), s)]
-
-    if s:  # если теги есть
+    if animal_filter.tags:  # если теги есть
+        s = [i for i in reduce(lambda x, y: x.intersection(y), s)]  # получаем айди животных, которые подойдут пользователю по фильтрам
         if animal_filter.gender > 1:  # фильтр для любого пола
             condition = and_(Animal.id > user.lastWatchedAnimal, Animal.birthDate.between(min_date, max_date),
                              Animal.id.in_(s))
@@ -47,7 +45,7 @@ async def generate_next_animal_card(user_id, message: Message):
 
     if animal is None:  # может быть животное было последним в списке, надо попробовать поискать с самого начала
 
-        if s:  # если теги есть
+        if animal_filter.tags:  # если теги есть
             if animal_filter.gender > 1:  # фильтр для любого пола
                 condition = and_(Animal.birthDate.between(min_date, max_date), Animal.id.in_(s))
 
