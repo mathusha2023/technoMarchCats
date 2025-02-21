@@ -21,6 +21,6 @@ async def add_animal_to_db(data):
         image.animalId = i
         image.image = photo
         session.add(image)
-    animal = Animal(name=name, birthDate=birthday, description=description, gender=gender, tags=tags)
+    animal = Animal(id=i, name=name, birthDate=birthday, description=description, gender=gender, tags=tags)
     session.add(animal)
     session.commit()

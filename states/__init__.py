@@ -1,2 +1,3 @@
 from .add_animal_state import AddAnimalStates
 from .watch_animals_state import WatchAnimalsStates
+from .delete_animal_state import DeleteAnimalStates

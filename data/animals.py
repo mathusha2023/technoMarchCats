@@ -8,12 +8,12 @@ from .animal_to_animal_tag import AnimalToAnimalTag
 class Animal(SqlAlchemyBase):
     __tablename__ = 'animals'
 
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     gender = sqlalchemy.Column(sqlalchemy.Integer)  # 0 - мальчик, 1 - девочка
     birthDate = sqlalchemy.Column(sqlalchemy.Date)
     description = sqlalchemy.Column(sqlalchemy.String)
-    images = orm.relationship("AnimalImage")
+    images = orm.relationship("AnimalImage", backref="animals", passive_deletes=True)
     tags = orm.relationship('AnimalTag', secondary=AnimalToAnimalTag, back_populates="animals")
 
 
