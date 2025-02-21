@@ -62,6 +62,8 @@ async def generate_next_animal_card(user_id, message: Message):
         animal = session.query(Animal).where(condition).first()
 
     if animal is None:  # животное все равно не найдено, значит, под такой фильтр животного не существует
+        user.lastWatchedAnimal = 0  # удаляем последнее просмотренное пользователем животное (надо для работы системы заявок)
+        session.commit()
         return await message.answer("Котиков под ваши фильтры не найдено:( Попробуйте изменить набор значений в фильтре")
     user.lastWatchedAnimal = animal.id
     session.commit()

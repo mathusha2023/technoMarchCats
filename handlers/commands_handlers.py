@@ -17,7 +17,8 @@ router = Router()
 async def start(message: Message, state: FSMContext):
     session = db_session.create_session()
     user_id = message.from_user.id
-    if session.query(User).filter(User.id == user_id).first() is None:
+    if session.query(User).filter(
+            User.id == user_id).first() is None:  # если в базе данных еще нет такого пользователя, то создаем его
         user = User()
         user.id = user_id
         user.username = message.from_user.username

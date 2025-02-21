@@ -1,10 +1,14 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
+from sqlalchemy import desc
+from data import db_session
 import strings
 import keyboards
-from states import AddAnimalStates, DeleteAnimalStates, UpdateAnimalStates
+from data.animal_requests import AnimalRequest
+from states import AddAnimalStates, DeleteAnimalStates, UpdateAnimalStates, GuardianshipListAdminStates
 from utils.generate_animals_admin_list import generate_animals_admin_list
+from utils.generate_guardianship_request_message import generate_guardianship_request_message
 
 router = Router()
 
@@ -55,3 +59,30 @@ async def update_animal_callback(callback: CallbackQuery, state: FSMContext):
 async def animals_admin_list_callback(callback: CallbackQuery):
     await generate_animals_admin_list(callback.message)
     await callback.answer()
+
+
+@router.callback_query(F.data == "guardianship_list")
+async def guardianship_list_callback(callback: CallbackQuery, state: FSMContext):
+    session = db_session.create_session()
+    animal_request = session.query(AnimalRequest).order_by(desc(AnimalRequest.id)).first()
+    await state.set_state(GuardianshipListAdminStates.watching)
+    if animal_request is None:
+        await callback.answer()
+        return await callback.message.answer("В настоящий момент все заявки рассмотрены")
+
+    await state.update_data({"last_request_id": animal_request.id})
+    await callback.message.answer("Вот все заявки от пользователей:", reply_markup=keyboards.watch_guardianship_keyboard())
+    await generate_guardianship_request_message(animal_request, callback.message)
+    await callback.answer()
+
+
+@router.callback_query(F.data.startswith("delete_request_"))
+async def delete_request_callback(callback: CallbackQuery):
+    request_id = int(callback.data.split("_")[-1])  # получаем ID заявки
+    session = db_session.create_session()
+    animal_request = session.query(AnimalRequest).where(AnimalRequest.id == request_id).first()
+    if animal_request:
+        session.delete(animal_request)
+        session.commit()
+    await callback.message.delete()
+    await callback.answer("Заявка успешно удалена")

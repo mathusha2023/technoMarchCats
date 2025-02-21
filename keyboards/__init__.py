@@ -17,3 +17,5 @@ from .yes_or_no_keyboard import yes_or_no_keyboard
 from .admin_update_animal_keyboard import admin_update_animal_keyboard
 from .back_keyboard import back_keyboard
 from .watch_animals_after_taking_keyboard import watch_animals_after_taking_keyboard
+from .watch_guardianship_keyboard import watch_guardianship_keyboard
+from .delete_request_keyboard import delete_request_keyboard
