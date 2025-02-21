@@ -20,7 +20,8 @@ async def start(message: Message, state: FSMContext):
     if session.query(User).filter(User.id == user_id).first() is None:
         user = User()
         user.id = user_id
-        user.username = message.from_user.first_name
+        user.username = message.from_user.username
+        user.first_name = message.from_user.first_name
         if user_id == config.SUPERADMIN_ID:
             user.accessLevel = 3
         user_filter = AnimalFilter()
