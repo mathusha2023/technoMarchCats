@@ -19,7 +19,7 @@ async def main():
     try:
         await dp.start_polling(bot)
     except asyncio.exceptions.CancelledError:
-        print("The polling cycle was interrupted")
+        logging.log("The polling cycle was interrupted")
 
 
 if __name__ == "__main__":

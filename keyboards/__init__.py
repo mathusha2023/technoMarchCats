@@ -14,3 +14,5 @@ from .animal_tags_filter_keyboard import animal_tags_filter_keyboard
 from .watch_animals_ids_keyboard import watch_animals_ids_keyboard
 from .close_animals_admin_list_keyboard import close_animals_admin_list_keyboard
 from .yes_or_no_keyboard import yes_or_no_keyboard
+from .admin_update_animal_keyboard import admin_update_animal_keyboard
+from .back_keyboard import back_keyboard

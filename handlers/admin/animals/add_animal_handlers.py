@@ -73,14 +73,14 @@ async def adding_images(message: Message, state: FSMContext, album: [Message] = 
     if len(photos) > 10:  # можно прислать не более 10 фотографий, лишние удаляются
         photos = photos[:10]
     if not photos:
-        await message.answer("Пришлите от одной до десяти фотографий котика!")
-        return
+        return await message.answer("Пришлите от одной до десяти фотографий котика!")
+
     await state.update_data({"photos": photos})
     await state.set_state(AddAnimalStates.adding_tags)
     await message.answer(
         "Замечательно! Последний пункт: выберите теги, которые будут у нашего любимца. Пришлите номера выбранных из списка ниже тегов через пробел. Например, 1 2 3 8")
     session = db_session.create_session()
-    tags = session.query(AnimalTag).all()
+    tags = session.query(AnimalTag).order_by(AnimalTag.id).all()
     s = ""
     for tag in tags:
         s += f"{tag.id} - {tag.tag}\n"

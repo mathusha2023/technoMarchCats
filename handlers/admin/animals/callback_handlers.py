@@ -3,7 +3,7 @@ from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 import strings
 import keyboards
-from states import AddAnimalStates, DeleteAnimalStates
+from states import AddAnimalStates, DeleteAnimalStates, UpdateAnimalStates
 from utils.generate_animals_admin_list import generate_animals_admin_list
 
 router = Router()
@@ -41,6 +41,13 @@ async def add_animal_callback(callback: CallbackQuery, state: FSMContext):
 async def delete_animal_callback(callback: CallbackQuery, state: FSMContext):
     await state.set_state(DeleteAnimalStates.index_input)
     await callback.message.edit_text("Введите ID животного, которое хотите удалить", reply_markup=keyboards.watch_animals_ids_keyboard())
+    await callback.answer()
+
+
+@router.callback_query(F.data == "update_animal")
+async def update_animal_callback(callback: CallbackQuery, state: FSMContext):
+    await state.set_state(UpdateAnimalStates.index_input)
+    await callback.message.edit_text("Введите ID животного, информацию о котором вы хотите обновить", reply_markup=keyboards.watch_animals_ids_keyboard())
     await callback.answer()
 
 

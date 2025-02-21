@@ -8,7 +8,7 @@ import keyboards
 async def generate_animals_admin_list(message: Message):
     session = create_session()
 
-    animals = session.query(Animal).all()
+    animals = session.query(Animal).order_by(Animal.id).all()
 
     if animals:
         text = ""
