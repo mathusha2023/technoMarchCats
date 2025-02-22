@@ -56,7 +56,7 @@ async def admin(message: Message, state: FSMContext):
 
 
 @router.message(Command("admin"))
-async def admin(message: Message, state: FSMContext):
+async def admin_denied(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Данная команда доступна только администраторам!",
                          reply_markup=keyboards.ReplyKeyboardRemove())

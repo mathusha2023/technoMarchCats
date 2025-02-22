@@ -108,7 +108,7 @@ async def adding_tags(message: Message, state: FSMContext):
 
 
 @router.message(F.text == "Да, все так", AddAnimalStates.confirm_adding)
-async def add(message: Message, state: FSMContext):
+async def accept_adding(message: Message, state: FSMContext):
     await add_animal_to_db(await state.get_data())
     await message.answer("Наш новый питомец успешно добавлен в базу данных!", reply_markup=keyboards.ReplyKeyboardRemove())
     await state.clear()
@@ -116,7 +116,7 @@ async def add(message: Message, state: FSMContext):
 
 
 @router.message(F.text == "Заполнить карточку заново", AddAnimalStates.confirm_adding)
-async def add(message: Message, state: FSMContext):
+async def restart_adding(message: Message, state: FSMContext):
     await state.set_data({})  # очищаем все полученные данные
     await state.set_state(AddAnimalStates.naming)  # заново переходим к выбору имени питомца
     await message.answer("Введите имя нашего котика", reply_markup=keyboards.ReplyKeyboardRemove())

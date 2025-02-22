@@ -32,7 +32,7 @@ async def cancel(message: Message, state: FSMContext):  # отмена изме�
     await message.answer(f"Какую информацию вы хотите обновить?", reply_markup=keyboards.admin_update_animal_keyboard())
 
 
-@router.message(F.text.isdigit(), UpdateAnimalStates.index_input)
+@router.message(F.text.isdigit(), UpdateAnimalStates.index_input)  # пользователь выбрал какое животное он хочет обновить
 async def update_animal(message: Message, state: FSMContext):
     animal_id = int(message.text)
     session = db_session.create_session()
@@ -54,7 +54,7 @@ async def update_animal(message: Message, state: FSMContext):
 
 
 @router.message(UpdateAnimalStates.index_input)
-async def delete_animal(message: Message):
+async def update_animal_denied(message: Message):
     await message.answer("Введите корректный ID животного!")
 
 
@@ -74,45 +74,47 @@ async def save_animal(message: Message, state: FSMContext):
 
 
 @router.message(F.text == "Имя", UpdateAnimalStates.choose_change_param)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_name_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.naming)
     await message.answer("Пожалуйста, пришлите новое имя котика", reply_markup=keyboards.cancel_keyboard())
 
 
 @router.message(F.text == "Пол", UpdateAnimalStates.choose_change_param)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_gender_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_gender)
     await message.answer("Пожалуйста, пришлите новый пол котика. 1 - мальчик, 2 - девочка",
                          reply_markup=keyboards.select_animal_gender_keyboard())
 
 
 @router.message(F.text == "Дату рождения", UpdateAnimalStates.choose_change_param)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_birthdate_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_birthday)
     await message.answer("Пожалуйста, пришлите новую дату рождения котика в формате dd.mm.yyyy",
                          reply_markup=keyboards.cancel_keyboard())
 
 
 @router.message(F.text == "Описание", UpdateAnimalStates.choose_change_param)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_description_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.describing)
     await state.update_data({"description": message.text})
     await message.answer("Пожалуйста, пришлите новое описание котика", reply_markup=keyboards.cancel_keyboard())
 
 
 @router.message(F.text == "Фотографии", UpdateAnimalStates.choose_change_param)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_images_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_images)
     await message.answer("Пожалуйста, пришлите новые фотографии котика (до 10 штук)",
                          reply_markup=keyboards.cancel_keyboard())
 
 
 @router.message(F.text == "Теги", UpdateAnimalStates.choose_change_param)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_tags_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_tags)
     await message.answer(
         "Пожалуйста выберите новые теги котика из списка ниже. Пришлите их номера через пробел. Например, 1 2 3 8",
         reply_markup=keyboards.cancel_keyboard())
+
+    # создаем список из всех существующих тегов
     s = ""
     data = await state.get_data()
     session = data["session"]
@@ -123,7 +125,7 @@ async def delete_animal(message: Message, state: FSMContext):
 
 
 @router.message(F.text, UpdateAnimalStates.naming)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_name(message: Message, state: FSMContext):
     await state.update_data({"name": message.text})
     data = await state.get_data()
     await message.answer(f"Карточка {data['name']} теперь выглядит так:")
@@ -132,7 +134,7 @@ async def delete_animal(message: Message, state: FSMContext):
 
 
 @router.message(F.text.in_(["1", "2"]), UpdateAnimalStates.changing_gender)  # корректный ввод для смены пола кота
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_gender(message: Message, state: FSMContext):
     await state.update_data({"gender": int(message.text) - 1})
     data = await state.get_data()
     await message.answer(f"Карточка {data['name']} теперь выглядит так:")
@@ -141,12 +143,12 @@ async def delete_animal(message: Message, state: FSMContext):
 
 
 @router.message(F.text, UpdateAnimalStates.changing_gender)  # некорректные данные
-async def delete_animal(message: Message):
+async def update_animal_gender_denied(message: Message):
     await message.answer("Пришлите 1, если у нас мальчик, и 2 - если девочка!")
 
 
 @router.message(F.text, UpdateAnimalStates.changing_birthday)
-async def changing_age(message: Message, state: FSMContext):
+async def update_animal_birthdate(message: Message, state: FSMContext):
     try:
         date_ = datetime.strptime(message.text, "%d.%m.%Y").date()
         await state.update_data({"birthday": date_})
@@ -159,7 +161,7 @@ async def changing_age(message: Message, state: FSMContext):
 
 
 @router.message(F.text, UpdateAnimalStates.describing)
-async def delete_animal(message: Message, state: FSMContext):
+async def update_animal_description(message: Message, state: FSMContext):
     await state.update_data({"description": message.text})
     data = await state.get_data()
     await message.answer(f"Карточка {data['name']} теперь выглядит так:")
@@ -168,7 +170,7 @@ async def delete_animal(message: Message, state: FSMContext):
 
 
 @router.message(UpdateAnimalStates.changing_images)  # замена фотографий
-async def changing_images(message: Message, state: FSMContext, album: [Message] = None):
+async def update_animal_images(message: Message, state: FSMContext, album: [Message] = None):
     photos = []
     if album is None:  # если фотографии не были присланы группой
         album = [message]
@@ -188,7 +190,7 @@ async def changing_images(message: Message, state: FSMContext, album: [Message] 
 
 
 @router.message(F.text, UpdateAnimalStates.changing_tags)
-async def changing_tags(message: Message, state: FSMContext):
+async def update_animal_tags(message: Message, state: FSMContext):
     try:
         data = await state.get_data()
         tags = []

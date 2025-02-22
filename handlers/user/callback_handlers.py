@@ -35,7 +35,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("tags_filter_left_"))  # перелистывание списка тегов влево по кнопке
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def tags_filter_left__callback(callback: CallbackQuery):
     fourth_number = int(callback.data.split("_")[-1])  # получаем номер последней четверки, в которой находился тег
     session = create_session()
     tags = session.query(AnimalTag).limit(4).offset((fourth_number - 2 if fourth_number > 1 else 0) * 4).all()
@@ -46,7 +46,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("tags_filter_right_"))  # перелистывание списка тегов вправо по кнопке
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def tags_filter_right__callback(callback: CallbackQuery):
     fourth_number = int(callback.data.split("_")[-1])  # получаем номер последней четверки, в которой находился тег
     session = create_session()
     last_tag = session.query(AnimalTag).order_by(desc(AnimalTag.id)).first()
@@ -58,7 +58,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("tags_filter_"))  # пользователь нажал на название тега на клавиатуре выбора тегов
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def tags_filter__callback(callback: CallbackQuery):
     tag_name = callback.data.split("_")[-1]  # получаем название тега
     session = create_session()
     animal_filter = session.query(User).where(User.id == callback.from_user.id).first().filter
@@ -75,7 +75,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "change_tags_filter")  # нажатие кнопки "изменить теги" - генерация клавиатуры для смены тегов
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def change_tags_filter_callback(callback: CallbackQuery):
     session = create_session()
     last_tag = session.query(AnimalTag).order_by(desc(AnimalTag.id)).first()
     tags = session.query(AnimalTag).limit(4).all()
@@ -86,13 +86,13 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "back_filter")  # нажатие кнопки назад при смене тегов
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def back_filter_callback(callback: CallbackQuery):
     await callback.message.edit_reply_markup(reply_markup=keyboards.animal_filter_keyboard())
     await callback.answer()
 
 
 @router.callback_query(F.data == "min_age_down_filter")
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def min_age_down_filter_callback(callback: CallbackQuery):
     session = create_session()
     animal_filter: AnimalFilter = session.query(User).where(User.id == callback.from_user.id).first().filter
     if animal_filter.minAge == 0:
@@ -104,7 +104,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "min_age_up_filter")
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def min_age_up_filter_callback(callback: CallbackQuery):
     session = create_session()
     animal_filter: AnimalFilter = session.query(User).where(User.id == callback.from_user.id).first().filter
     if animal_filter.minAge == animal_filter.maxAge:
@@ -116,7 +116,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "max_age_down_filter")
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def max_age_down_filter_callback(callback: CallbackQuery):
     session = create_session()
     animal_filter: AnimalFilter = session.query(User).where(User.id == callback.from_user.id).first().filter
     if animal_filter.minAge == animal_filter.maxAge:
@@ -128,7 +128,7 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "max_age_up_filter")
-async def change_gender_filter_callback(callback: CallbackQuery):
+async def max_age_up_filter_callback(callback: CallbackQuery):
     session = create_session()
     animal_filter: AnimalFilter = session.query(User).where(User.id == callback.from_user.id).first().filter
     animal_filter.maxAge += 1

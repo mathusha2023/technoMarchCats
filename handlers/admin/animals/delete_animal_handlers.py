@@ -11,7 +11,7 @@ router = Router()
 router.message.middleware(MediaGroupMiddleware())
 
 
-@router.message(F.text.isdigit(), DeleteAnimalStates.index_input)
+@router.message(F.text.isdigit(), DeleteAnimalStates.index_input)  # получаем животное которое надо удалить
 async def delete_animal(message: Message, state: FSMContext):
     animal_id = int(message.text)
     session = db_session.create_session()
@@ -24,12 +24,12 @@ async def delete_animal(message: Message, state: FSMContext):
 
 
 @router.message(DeleteAnimalStates.index_input)
-async def delete_animal(message: Message):
+async def delete_animal_denied(message: Message):
     await message.answer("Введите корректный ID животного!")
 
 
 @router.message(F.text == "Да", DeleteAnimalStates.confirm_delete)
-async def delete_animal(message: Message, state: FSMContext):
+async def delete_yes(message: Message, state: FSMContext):
     data = await state.get_data()
     session = data["session"]
     animal = data["animal"]
@@ -43,14 +43,14 @@ async def delete_animal(message: Message, state: FSMContext):
 
 
 @router.message(F.text == "Нет", DeleteAnimalStates.confirm_delete)
-async def delete_animal(message: Message, state: FSMContext):
+async def delete_no(message: Message, state: FSMContext):
     await state.set_state(DeleteAnimalStates.index_input)
     await state.set_data({})
     await message.answer("Введите ID животного, которое хотите удалить", reply_markup=keyboards.ReplyKeyboardRemove())
 
 
 @router.message(F.text == "В меню", DeleteAnimalStates.confirm_delete)
-async def delete_animal(message: Message, state: FSMContext):
+async def in_menu(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Возврат в меню выбора действия", reply_markup=keyboards.ReplyKeyboardRemove())
     await message.answer("Вот список возможных действий:", reply_markup=keyboards.admin_animals_keyboard())
