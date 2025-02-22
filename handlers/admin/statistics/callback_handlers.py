@@ -30,4 +30,5 @@ async def stats_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
         text = text[:4096]
     
     await bot.send_message(chat_id=callback.message.chat.id, text=text)
+    await callback.answer()
 
