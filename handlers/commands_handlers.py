@@ -7,10 +7,15 @@ from data import db_session
 from data.animals_filters import AnimalFilter
 from data.users import User
 import strings
-from filters import AdminFilter
+from filters import AdminFilter, BannedFilter
 import keyboards
 
 router = Router()
+
+
+@router.message(BannedFilter())
+async def answer_for_banned(message: Message):
+    await message.answer(strings.BANNED_USERS_MESSAGE, reply_markup=keyboards.ReplyKeyboardRemove())
 
 
 @router.message(Command("start"))
@@ -22,7 +27,7 @@ async def start(message: Message, state: FSMContext):
         user = User()
         user.id = user_id
         user.username = message.from_user.username
-        user.first_name = message.from_user.first_name
+        user.firstName = message.from_user.first_name
         if user_id == config.SUPERADMIN_ID:
             user.accessLevel = 3
         user_filter = AnimalFilter()

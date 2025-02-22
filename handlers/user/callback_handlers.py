@@ -35,30 +35,33 @@ async def change_gender_filter_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("tags_filter_left_"))  # перелистывание списка тегов влево по кнопке
-async def tags_filter_left__callback(callback: CallbackQuery):
+async def tags_filter_left_callback(callback: CallbackQuery):
     fourth_number = int(callback.data.split("_")[-1])  # получаем номер последней четверки, в которой находился тег
     session = create_session()
     tags = session.query(AnimalTag).limit(4).offset((fourth_number - 2 if fourth_number > 1 else 0) * 4).all()
     string_tags = [tag.tag for tag in tags]
     await callback.message.edit_reply_markup(
-        reply_markup=keyboards.animal_tags_filter_keyboard(string_tags, fourth_number - 1, show_right=True, show_left=tags[-1].id > 4))
+        reply_markup=keyboards.animal_tags_filter_keyboard(string_tags, fourth_number - 1, show_right=True,
+                                                           show_left=fourth_number > 2))
     await callback.answer()
 
 
 @router.callback_query(F.data.startswith("tags_filter_right_"))  # перелистывание списка тегов вправо по кнопке
-async def tags_filter_right__callback(callback: CallbackQuery):
+async def tags_filter_right_callback(callback: CallbackQuery):
     fourth_number = int(callback.data.split("_")[-1])  # получаем номер последней четверки, в которой находился тег
     session = create_session()
-    last_tag = session.query(AnimalTag).order_by(desc(AnimalTag.id)).first()
+    tags_count = session.query(AnimalTag).count()
     tags = session.query(AnimalTag).limit(4).offset(fourth_number * 4).all()
     string_tags = [tag.tag for tag in tags]
     await callback.message.edit_reply_markup(
-        reply_markup=keyboards.animal_tags_filter_keyboard(string_tags, fourth_number + 1, show_left=True, show_right=last_tag.id > tags[-1].id))
+        reply_markup=keyboards.animal_tags_filter_keyboard(string_tags, fourth_number + 1, show_left=True,
+                                                           show_right=tags_count > (fourth_number + 1) * 4))
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("tags_filter_"))  # пользователь нажал на название тега на клавиатуре выбора тегов
-async def tags_filter__callback(callback: CallbackQuery):
+@router.callback_query(
+    F.data.startswith("tags_filter_"))  # пользователь нажал на название тега на клавиатуре выбора тегов
+async def tags_filter_callback(callback: CallbackQuery):
     tag_name = callback.data.split("_")[-1]  # получаем название тега
     session = create_session()
     animal_filter = session.query(User).where(User.id == callback.from_user.id).first().filter
@@ -74,7 +77,8 @@ async def tags_filter__callback(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data == "change_tags_filter")  # нажатие кнопки "изменить теги" - генерация клавиатуры для смены тегов
+@router.callback_query(
+    F.data == "change_tags_filter")  # нажатие кнопки "изменить теги" - генерация клавиатуры для смены тегов
 async def change_tags_filter_callback(callback: CallbackQuery):
     session = create_session()
     last_tag = session.query(AnimalTag).order_by(desc(AnimalTag.id)).first()

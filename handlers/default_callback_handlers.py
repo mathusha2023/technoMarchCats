@@ -2,8 +2,14 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 import strings
 import keyboards
+from filters import BannedFilter
 
 router = Router()
+
+
+@router.message(BannedFilter())
+async def answer_for_banned(callback: CallbackQuery):
+    await callback.message.answer(strings.BANNED_USERS_MESSAGE, reply_markup=keyboards.ReplyKeyboardRemove())
 
 
 @router.callback_query(F.data == "contact")

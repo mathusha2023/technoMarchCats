@@ -19,3 +19,6 @@ from .back_keyboard import back_keyboard
 from .watch_animals_after_taking_keyboard import watch_animals_after_taking_keyboard
 from .watch_guardianship_keyboard import watch_guardianship_keyboard
 from .delete_request_keyboard import delete_request_keyboard
+from .users_list_keyboard import users_list_keyboard
+from .cancel_searching_user_keyboard import cancel_user_searching_keyboard
+from .admin_user_control_keyboard import admin_user_control_keyboard

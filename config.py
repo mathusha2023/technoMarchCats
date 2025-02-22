@@ -14,3 +14,4 @@ with open(CONFIG_FILE, encoding="utf-8") as file:
 
 BOT_COMMANDS = jsonFile["botCommands"]
 ANIMAL_TAGS = jsonFile["animalTags"]
+BANNED_USERS = list()
