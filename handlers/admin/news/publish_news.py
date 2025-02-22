@@ -7,6 +7,7 @@ from states import AddNewsStates
 from typing import List
 from data.db_session import create_session
 from data.users import User
+import keyboards
 
 router = Router()
 router.message.middleware(MediaGroupMiddleware())
@@ -21,7 +22,7 @@ async def cancel(message: Message, state: FSMContext):
 async def heading(message: Message, state: FSMContext):
     await state.update_data(heading=message.text)
     await state.set_state(AddNewsStates.add_images)
-    await message.answer("отправьте приложения к новости или любое сообщение")
+    await message.answer("отправьте приложения к новости")
     
 @router.message(AddNewsStates.add_images)
 async def add_images(message: Message, state: FSMContext, album: List[Message] = None, bot: Bot = None):
