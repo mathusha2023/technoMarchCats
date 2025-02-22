@@ -7,7 +7,7 @@ async def generate_guardianship_request_message(request, message: Message):
     user = request.user
     animal = request.animal
 
-    text = f"""Пользователь: {user.first_name}
+    text = f"""Пользователь: {user.firstName}
 Котик: {animal.name} (ID={animal.id}) 
 Свяжитесь с пользователем, чтобы обсудить детали.
 tg: @{user.username}"""
