@@ -12,7 +12,6 @@ from utils.generate_guardianship_request_message import generate_guardianship_re
 
 router = Router()
 
-
 @router.callback_query(F.data == "escape_to_admin_menu")
 async def escape_to_admin_menu_callback(callback: CallbackQuery, state: FSMContext):
     await state.clear()

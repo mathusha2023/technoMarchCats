@@ -15,7 +15,6 @@ from utils.generate_animal_card_by_state import generate_animal_card_by_state
 router = Router()
 router.message.middleware(MediaGroupMiddleware())
 
-
 @router.message(F.text == "Отмена", StatesGroupFilter(AddAnimalStates))  # сработает при любом состоянии добавления животного
 async def cancel(message: Message, state: FSMContext):
     await state.clear()

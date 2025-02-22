@@ -3,3 +3,4 @@ from .watch_animals_state import WatchAnimalsStates
 from .delete_animal_state import DeleteAnimalStates
 from .update_animal_state import UpdateAnimalStates
 from .guardianship_list_admin_state import GuardianshipListAdminStates
+from .add_news_state import AddNewsStates
