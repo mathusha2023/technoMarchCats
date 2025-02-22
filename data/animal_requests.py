@@ -9,7 +9,7 @@ class AnimalRequest(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     createdAt = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.now())
-    userId = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
+    userId = sqlalchemy.Column(sqlalchemy.BigInteger, sqlalchemy.ForeignKey("users.id"))
     animalId = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("animals.id"))
     user = orm.relationship("User", uselist=False, backref="animal_requests")
     animal = orm.relationship("Animal", uselist=False, backref="animal_requests")
