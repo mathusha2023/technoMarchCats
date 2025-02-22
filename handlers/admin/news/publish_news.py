@@ -34,7 +34,7 @@ async def add_images(message: Message, state: FSMContext, album: List[Message] =
     if len(photos) > 10:  # можно прислать не более 10 фотографий, лишние удаляются
         photos = photos[:10]
     await state.update_data({"photos": photos})
-    print(photos)
+    
     with create_session() as session:
         ids = session.query(User).all()
         for id_ in ids:

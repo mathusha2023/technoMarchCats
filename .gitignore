@@ -75,3 +75,5 @@ utils/__pycache__/generate_next_animal_card.cpython-312.pyc
 utils/__pycache__/get_text_gender.cpython-312.pyc
 utils/__pycache__/send_message_to_all_administrators.cpython-312.pyc
 utils/__pycache__/update_animal_information.cpython-312.pyc
+handlers/admin/statistics/__pycache__/__init__.cpython-312.pyc
+handlers/admin/statistics/__pycache__/callback_handlers.cpython-312.pyc
