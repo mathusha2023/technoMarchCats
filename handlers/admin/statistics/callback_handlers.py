@@ -25,7 +25,7 @@ async def stats_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
     
     donations_count = 0 # TODO donations count
 
-    text = f"обычных пользователей: {user_count}\nадминов: {admin_count}\nзабаненных: {banned_count}\n//////////////////////////\nзаявок: {requests_count}\n//////////////////////////\nпожертвований: {donations_count}\n"
+    text = f"📊 Наша статистика:\n🔹 обычных пользователей: {user_count}\n🔹 админов: {admin_count}\n🔹 забаненных: {banned_count}\n➖➖➖➖➖➖➖➖➖➖\n🔹 заявок: {requests_count}\n➖➖➖➖➖➖➖➖➖➖\n🔹 пожертвований: {donations_count}\n"
     if len(text) > 4096:
         text = text[:4096]
     
