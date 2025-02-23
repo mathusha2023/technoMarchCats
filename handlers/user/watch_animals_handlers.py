@@ -20,7 +20,7 @@ from utils.send_message_to_all_administrators import send_message_to_all_adminis
 router = Router()
 
 
-@router.message(F.text == "В меню",
+@router.message(F.text == "📂 В меню",
                 StatesGroupFilter(WatchAnimalsStates))  # сработает при любом состоянии просмотра животных
 async def cancel(message: Message, state: FSMContext):
     await state.clear()
@@ -36,7 +36,7 @@ async def cats(message: Message, state: FSMContext):
     await generate_next_animal_card(message.from_user.id, message)
 
 
-@router.message(F.text == "Следующий котик", WatchAnimalsStates.watching)
+@router.message(F.text == "↘️ Следующий котик", WatchAnimalsStates.watching)
 async def next_cat(message: Message, state: FSMContext):
     data = await state.get_data()
     if data.get("took", False):  # если до этого котика только взяли, то надо поменять клавиатуру
@@ -45,14 +45,14 @@ async def next_cat(message: Message, state: FSMContext):
     await generate_next_animal_card(message.from_user.id, message)
 
 
-@router.message(F.text == "Кошачий фильтр", WatchAnimalsStates.watching)
+@router.message(F.text == "🔄 Кошачий фильтр", WatchAnimalsStates.watching)
 async def cats_filter(message: Message):
     session = create_session()
     animal_filter: AnimalFilter = session.query(User).where(User.id == message.from_user.id).first().filter
     await generate_animal_filter_message(message, animal_filter)
 
 
-@router.message(F.text == "Хочу взять!", WatchAnimalsStates.watching)
+@router.message(F.text == "📥 Хочу взять!", WatchAnimalsStates.watching)
 async def take_cat(message: Message, state: FSMContext, bot: Bot):
     session = db_session.create_session()
 

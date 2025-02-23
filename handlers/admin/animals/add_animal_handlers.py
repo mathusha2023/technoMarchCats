@@ -15,7 +15,7 @@ from utils.generate_animal_card_by_state import generate_animal_card_by_state
 router = Router()
 router.message.middleware(MediaGroupMiddleware())
 
-@router.message(F.text == "Отмена", StatesGroupFilter(AddAnimalStates))  # сработает при любом состоянии добавления животного
+@router.message(F.text == "🚫 Отмена", StatesGroupFilter(AddAnimalStates))  # сработает при любом состоянии добавления животного
 async def cancel(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Добавление котика отменено", reply_markup=keyboards.ReplyKeyboardRemove())
@@ -106,7 +106,7 @@ async def adding_tags(message: Message, state: FSMContext):
         await message.answer("Пришлите корректные номера тегов!")
 
 
-@router.message(F.text == "Да, все так", AddAnimalStates.confirm_adding)
+@router.message(F.text == "✅ Да, все так", AddAnimalStates.confirm_adding)
 async def accept_adding(message: Message, state: FSMContext):
     await add_animal_to_db(await state.get_data())
     await message.answer("Наш новый питомец успешно добавлен в базу данных!", reply_markup=keyboards.ReplyKeyboardRemove())
@@ -114,7 +114,7 @@ async def accept_adding(message: Message, state: FSMContext):
     await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
-@router.message(F.text == "Заполнить карточку заново", AddAnimalStates.confirm_adding)
+@router.message(F.text == "✏️ Заполнить карточку заново", AddAnimalStates.confirm_adding)
 async def restart_adding(message: Message, state: FSMContext):
     await state.set_data({})  # очищаем все полученные данные
     await state.set_state(AddAnimalStates.naming)  # заново переходим к выбору имени питомца
