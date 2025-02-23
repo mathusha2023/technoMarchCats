@@ -1,7 +1,5 @@
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
-from states import AddNewsStates
-import keyboards
 from aiogram import Router, F, Bot
 from data.db_session import create_session
 from data.users import User
@@ -15,7 +13,7 @@ async def delete_request_callback(callback: CallbackQuery):
     await callback.message.delete()
 
 @router.callback_query(F.data == "stats")
-async def stats_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
+async def stats_callback(callback: CallbackQuery):
     with create_session() as session: # подсчет пользователей
         all_users = session.query(User).all() 
         requests_count = session.query(AnimalRequest).count()
@@ -34,5 +32,5 @@ async def stats_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
     if len(text) > 4096:
         text = text[:4096]
     
-    await bot.send_message(chat_id=callback.message.chat.id, text=text, reply_markup=hide_message_keyboard())
+    await callback.message.answer(text, reply_markup=hide_message_keyboard())
     await callback.answer()
