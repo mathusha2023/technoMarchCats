@@ -19,7 +19,7 @@ router = Router()
 router.message.middleware(MediaGroupMiddleware())
 
 
-@router.message(F.text == "Отмена",
+@router.message(F.text == "🚫 Отмена",
                 StatesGroupFilter(AddNewsStates))  # сработает при любом состоянии добавления новости
 async def cancel(message: Message, state: FSMContext):
     await state.clear()

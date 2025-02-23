@@ -13,7 +13,7 @@ from utils.generate_guardianship_request_message import generate_guardianship_re
 router = Router()
 
 
-@router.message(F.text == "В меню",
+@router.message(F.text == "📂 В меню",
                 StatesGroupFilter(GuardianshipListAdminStates))  # сработает при любом состоянии обновления животного
 async def in_menu(message: Message, state: FSMContext):
     await state.clear()
@@ -21,7 +21,7 @@ async def in_menu(message: Message, state: FSMContext):
     await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
-@router.message(F.text == "Следующая",
+@router.message(F.text == "↘️ Следующая",
                 GuardianshipListAdminStates.watching)
 async def next_request(message: Message, state: FSMContext):
     data = await state.get_data()

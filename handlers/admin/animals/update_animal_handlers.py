@@ -17,7 +17,7 @@ router = Router()
 router.message.middleware(MediaGroupMiddleware())
 
 
-@router.message(F.text == "В меню",
+@router.message(F.text == "📂 В меню",
                 StatesGroupFilter(UpdateAnimalStates))  # сработает при любом состоянии обновления животного
 async def back(message: Message, state: FSMContext):  # полная отмена редактирования информации о животных
     await state.clear()
@@ -25,7 +25,7 @@ async def back(message: Message, state: FSMContext):  # полная отмен�
     await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
-@router.message(F.text == "Отмена",
+@router.message(F.text == "🚫 Отмена",
                 StatesGroupFilter(UpdateAnimalStates))  # сработает при любом состоянии обновления животного
 async def cancel(message: Message, state: FSMContext):  # отмена изменения какого-то конкретного параметра кота
     await state.set_state(UpdateAnimalStates.choose_change_param)
@@ -58,7 +58,7 @@ async def update_animal_denied(message: Message):
     await message.answer("Введите корректный ID животного!")
 
 
-@router.message(F.text == "Сохранить", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "✅ Сохранить", UpdateAnimalStates.choose_change_param)
 async def save_animal(message: Message, state: FSMContext):
     data = await state.get_data()
 
@@ -73,41 +73,41 @@ async def save_animal(message: Message, state: FSMContext):
                          reply_markup=keyboards.watch_animals_ids_keyboard())
 
 
-@router.message(F.text == "Имя", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "🐈‍⬛ Имя", UpdateAnimalStates.choose_change_param)
 async def update_animal_name_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.naming)
     await message.answer("Пожалуйста, пришлите новое имя котика", reply_markup=keyboards.cancel_keyboard())
 
 
-@router.message(F.text == "Пол", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "❓ Пол", UpdateAnimalStates.choose_change_param)
 async def update_animal_gender_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_gender)
     await message.answer("Пожалуйста, пришлите новый пол котика. 1 - мальчик, 2 - девочка",
                          reply_markup=keyboards.select_animal_gender_keyboard())
 
 
-@router.message(F.text == "Дату рождения", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "📅 Дату рождения", UpdateAnimalStates.choose_change_param)
 async def update_animal_birthdate_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_birthday)
     await message.answer("Пожалуйста, пришлите новую дату рождения котика в формате dd.mm.yyyy",
                          reply_markup=keyboards.cancel_keyboard())
 
 
-@router.message(F.text == "Описание", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "📑 Описание", UpdateAnimalStates.choose_change_param)
 async def update_animal_description_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.describing)
     await state.update_data({"description": message.text})
     await message.answer("Пожалуйста, пришлите новое описание котика", reply_markup=keyboards.cancel_keyboard())
 
 
-@router.message(F.text == "Фотографии", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "🖼️ Фотографии", UpdateAnimalStates.choose_change_param)
 async def update_animal_images_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_images)
     await message.answer("Пожалуйста, пришлите новые фотографии котика (до 10 штук)",
                          reply_markup=keyboards.cancel_keyboard())
 
 
-@router.message(F.text == "Теги", UpdateAnimalStates.choose_change_param)
+@router.message(F.text == "🗒️ Теги", UpdateAnimalStates.choose_change_param)
 async def update_animal_tags_request(message: Message, state: FSMContext):
     await state.set_state(UpdateAnimalStates.changing_tags)
     await message.answer(
