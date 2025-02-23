@@ -1,4 +1,6 @@
+import logging
 from aiogram import Router, F, Bot
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.media_group import MediaGroupBuilder
 from filters import StatesGroupFilter
@@ -15,7 +17,8 @@ router = Router()
 router.message.middleware(MediaGroupMiddleware())
 
 
-@router.message(F.text == "Отмена", StatesGroupFilter(AddNewsStates))  # сработает при любом состоянии добавления новости
+@router.message(F.text == "Отмена",
+                StatesGroupFilter(AddNewsStates))  # сработает при любом состоянии добавления новости
 async def cancel(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Добавление новости отменено", reply_markup=keyboards.ReplyKeyboardRemove())
@@ -54,9 +57,14 @@ async def add_images(message: Message, state: FSMContext, album: List[Message] =
             album_builder.add_photo(photo)
         media_group = album_builder.build()
 
-        users = session.query(User).where(User.id != message.from_user.id).all()  # получаем всех пользователей кроме отправителя новости
+        users = session.query(User).where(
+            User.id != message.from_user.id).all()  # получаем всех пользователей кроме отправителя новости
         for user in users:
-            await bot.send_media_group(chat_id=user.id, media=media_group)  # отправляем новость каждому пользователю
+            try:
+                await bot.send_media_group(chat_id=user.id,
+                                           media=media_group)  # отправляем новость каждому пользователю
+            except TelegramBadRequest:
+                logging.info(f"Пользователя {user.id} не существует!")
 
     await message.answer("Новость опубликована!")
     await state.clear()

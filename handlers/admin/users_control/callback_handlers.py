@@ -80,8 +80,12 @@ async def user_control(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data.startswith("ban_user"))
 async def ban_user_callback(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    session = data["session"]
-    user = data["user"]
+    try:
+        session = data["session"]
+        user = data["user"]
+    except KeyError:
+        logging.debug("В контексте нет полей session и user")
+        return await callback.answer("Ошибка! Попробуйте заново выбрать пользователя")
     if user.accessLevel > 1 and callback.from_user.id != config.SUPERADMIN_ID:
         return await callback.answer("Вы не можете заблокировать администратора")
     if user.isBanned:
@@ -96,15 +100,19 @@ async def ban_user_callback(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data.startswith("make_admin"))
 async def ban_user_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
     data = await state.get_data()
-    session = data["session"]
-    user = data["user"]
+    try:
+        session = data["session"]
+        user = data["user"]
+    except KeyError:
+        logging.debug("В контексте нет полей session и user")
+        return await callback.answer("Ошибка! Попробуйте заново выбрать пользователя")
     if user.accessLevel < 2:
         user.accessLevel = 2
         session.commit()
         try:
             await bot.send_message(user.id, "Вы были назначены администратором бота!")
         except TelegramBadRequest:
-            logging.INFO(f"Пользователя {user.id} не существует!")
+            logging.info(f"Пользователя {user.id} не существует!")
         return await generate_user_info_message(user, callback.message, edit=True)
     await callback.answer()
 
