@@ -6,7 +6,7 @@ import logging
 import config
 from data import db_session
 from handlers import include_routers
-from set_commands import set_commands
+from utils.set_commands import set_commands
 from utils.add_banned_users_to_cash import add_banned_users_to_cash
 from utils.add_base_tags_to_db import add_base_tags_to_db
 
