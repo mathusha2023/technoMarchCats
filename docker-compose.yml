@@ -8,13 +8,20 @@ services:
     restart: unless-stopped
     env_file:
       - .env.database
-#    volumes:
-#      - db_data:/var/lib/postgresql/data
+    volumes:
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     expose:
       - 5432
 
+  bot:
+    build: .
+    depends_on:
+      - database
+    restart: unless-stopped
+    env_file:
+      - .env.bot
 
   adminer:
     container_name: adminer
@@ -26,6 +33,6 @@ services:
       - database
 
 
-#volumes:
-#  db_data:
-#
+volumes:
+  db_data:
+
