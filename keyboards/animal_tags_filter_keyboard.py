@@ -14,10 +14,10 @@ def animal_tags_filter_keyboard(tags, fourth_number, show_left=False, show_right
 
     row = [InlineKeyboardButton(text="Назад", callback_data="back_filter")]
     if show_left:
-        row.insert(0, InlineKeyboardButton(text="<-",
+        row.insert(0, InlineKeyboardButton(text="◀️",
                                            callback_data=f"tags_filter_left_{fourth_number}"))  # номер четверки тегов
     if show_right:
-        row.insert(2, InlineKeyboardButton(text="->",
+        row.insert(2, InlineKeyboardButton(text="▶️",
                                            callback_data=f"tags_filter_right_{fourth_number}"))  # номер четверки тегов
 
     builder.row(*row)

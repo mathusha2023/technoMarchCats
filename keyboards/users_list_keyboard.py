@@ -17,10 +17,10 @@ def users_list_keyboard(users, fourth_number, show_left=False, show_right=False)
 
     row = [InlineKeyboardButton(text="Назад", callback_data="admin_menu")]
     if show_left:
-        row.insert(0, InlineKeyboardButton(text="<-",
+        row.insert(0, InlineKeyboardButton(text="◀️",
                                            callback_data=f"user_control_left_{fourth_number}"))  # номер четверки тегов
     if show_right:
-        row.insert(2, InlineKeyboardButton(text="->",
+        row.insert(2, InlineKeyboardButton(text="▶️",
                                            callback_data=f"user_control_right_{fourth_number}"))  # номер четверки тегов
 
     builder.row(*row)
