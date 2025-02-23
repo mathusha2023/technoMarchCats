@@ -11,9 +11,8 @@ from keyboards import hide_message_keyboard
 router = Router()
 
 @router.callback_query(F.data == "hide_stats")
-async def delete_request_callback(callback: CallbackQuery, bot: Bot):
-    await bot.delete_message(chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-    await callback.answer()
+async def delete_request_callback(callback: CallbackQuery):
+    await callback.message.delete()
 
 @router.callback_query(F.data == "stats")
 async def stats_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
