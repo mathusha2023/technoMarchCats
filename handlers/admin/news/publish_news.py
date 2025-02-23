@@ -3,6 +3,8 @@ from aiogram import Router, F, Bot
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.media_group import MediaGroupBuilder
+
+from config import BANNED_USERS
 from filters import StatesGroupFilter
 from middlewares import MediaGroupMiddleware
 from aiogram.types import Message
@@ -60,6 +62,8 @@ async def add_images(message: Message, state: FSMContext, album: List[Message] =
         users = session.query(User).where(
             User.id != message.from_user.id).all()  # получаем всех пользователей кроме отправителя новости
         for user in users:
+            if user.id in BANNED_USERS:  # заблокированным пользователям новости не нужны
+                continue
             try:
                 await bot.send_media_group(chat_id=user.id,
                                            media=media_group)  # отправляем новость каждому пользователю
