@@ -8,7 +8,7 @@ from data import db_session
 from handlers import include_routers
 from utils.set_commands import set_commands
 from utils.add_banned_users_to_cash import add_banned_users_to_cash
-from utils.add_base_tags_to_db import add_base_tags_to_db
+from utils.db_pre_init import db_pre_init
 
 
 async def main():
@@ -25,7 +25,7 @@ async def main():
 
 if __name__ == "__main__":
     db_session.global_init(config.DATABASE_URL)  # инициализация базы данных
-    add_base_tags_to_db()  # добавление базовых тегов в базу данных, если их там нет
+    db_pre_init()  # добавление базовых тегов в базу данных, если их там нет
     add_banned_users_to_cash()  # добавление заблокированных пользователей из базы данных в кеш
     logging.basicConfig(level=logging.INFO)
     asyncio.run(main()) 
