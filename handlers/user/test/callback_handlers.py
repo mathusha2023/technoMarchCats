@@ -3,7 +3,8 @@ from aiogram.fsm.context import FSMContext
 from states import TestStates
 import keyboards
 from aiogram import Router, F
-from utils.best_match import best_match 
+from utils.best_match import best_match
+from utils.generate_animal_card_by_state import generate_animal_card_by_state
 import strings
 from filters import StatesGroupFilter
 
@@ -92,10 +93,17 @@ async def question6(message: Message, state: FSMContext):
 @router.message(TestStates.answer)
 async def answer(message: Message, state: FSMContext):
     data = await state.get_data()
-    await message.answer(f"вам подойдет котик {best_match(results[max(data, key=data.get)])}", reply_markup=keyboards.ReplyKeyboardRemove())
-    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+    
+    name = best_match(results[max(data, key=data.get)])
+    
+    main_info = get_animal_info(name)
+    
+    await message.answer(generate_animal_card_by_state(main_info, message))
+    
+    #await message.answer(f"вам подойдет котик {name}", reply_markup=keyboards.ReplyKeyboardRemove())
+    #await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
     await state.clear()
     
-@router.message(F.text)
+@router.message(F.text, StatesGroupFilter(TestStates))
 async def badInput(message: Message, state: FSMContext):
     await message.answer("Такого ответа нет", reply_markup=keyboards.test_reply_keyboard())
