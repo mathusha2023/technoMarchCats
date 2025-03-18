@@ -90,3 +90,4 @@ utils/__pycache__/get_text_access_level.cpython-312.pyc
 filters/__pycache__/banned_filter.cpython-312.pyc
 keyboards/__pycache__/hide_message_keyboard.cpython-312.pyc
 utils/__pycache__/set_commands.cpython-312.pyc
+keyboards/__pycache__/help_um_keyboard.cpython-312.pyc
