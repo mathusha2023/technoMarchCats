@@ -25,3 +25,4 @@ from .admin_user_control_keyboard import admin_user_control_keyboard
 from .hide_message_keyboard import hide_message_keyboard
 from .help_um_keyboard import help_um_keyboard
 from .admin_volunteer_interaction import admin_volunteer_interaction_keyboard
+from .volunteers_list_keyboard import volunteers_list_keyboard
