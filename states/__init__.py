@@ -6,3 +6,4 @@ from .guardianship_list_admin_state import GuardianshipListAdminStates
 from .add_news_state import AddNewsStates
 from .users_control_state import UsersControlStates
 from .volunteer_news import AddVolunteerNewsStates
+from .test_state import TestStates
