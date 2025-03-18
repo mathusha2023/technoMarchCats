@@ -47,6 +47,8 @@ async def adding_gender(message: Message):
 async def adding_age(message: Message, state: FSMContext):
     try:
         date_ = datetime.strptime(message.text, "%d.%m.%Y").date()
+        if date_ > datetime.today():
+            return await message.answer("Введите корректную дату рождения!")
         await state.update_data({"birthday": date_})
         await state.set_state(AddAnimalStates.describing)
         await message.answer("Великолепно! Опишите котика")

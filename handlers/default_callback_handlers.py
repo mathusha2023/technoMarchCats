@@ -3,6 +3,8 @@ from aiogram.types import CallbackQuery
 import strings
 import keyboards
 from filters import BannedFilter
+from data.db_session import create_session
+from data.users import User
 
 router = Router()
 
@@ -34,7 +36,10 @@ async def start_about_callback(callback: CallbackQuery):
 
 @router.callback_query(F.data == "help_um")
 async def help_up_callback(callback: CallbackQuery):
-    await callback.message.edit_text(strings.HELP, reply_markup=keyboards.help_um_keyboard(False))
+    session = create_session()
+    user = session.query(User).where(User.id == callback.from_user.id).first()
+
+    await callback.message.edit_text(strings.HELP, reply_markup=keyboards.help_um_keyboard(user.isVolunteer))
 
 
 @router.callback_query(F.data == "start")

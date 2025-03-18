@@ -8,8 +8,8 @@ def help_um_keyboard(is_volunteer):
 
     builder = InlineKeyboardBuilder()
     builder.row(InlineKeyboardButton(text="Помочь копейкой", url=DONATE_LINK))
-    builder.row(InlineKeyboardButton(text="Помочь вещами", callback_data="partners_links_list"),
-                InlineKeyboardButton(text=volunteer_text, callback_data="volunteer"))
+    builder.row(InlineKeyboardButton(text="Помочь вещами", callback_data="partners_links_list"))
+    builder.row(InlineKeyboardButton(text=volunteer_text, callback_data="volunteer"))
     builder.row(InlineKeyboardButton(text="◀️ Назад",
                                      callback_data="start"))
     return builder.as_markup()
