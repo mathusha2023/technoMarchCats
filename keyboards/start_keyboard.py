@@ -10,6 +10,6 @@ def start_keyboard():
                 InlineKeyboardButton(text="📞 Связь с нами", callback_data="start_contact"))
     builder.row(InlineKeyboardButton(text="📥 Помочь нам",
                                      callback_data="help_um"), 
-                InlineKeyboardButton(text="Пройти тест", callback_data="test"))
+                InlineKeyboardButton(text="🗒️ Пройти тест", callback_data="test"))
     
     return builder.as_markup()
