@@ -151,7 +151,7 @@ async def update_animal_gender_denied(message: Message):
 async def update_animal_birthdate(message: Message, state: FSMContext):
     try:
         date_ = datetime.strptime(message.text, "%d.%m.%Y").date()
-        if date_ > datetime.today():
+        if date_ > datetime.today().date():
             return await message.answer("Введите корректную дату рождения!")
         await state.update_data({"birthday": date_})
         data = await state.get_data()
