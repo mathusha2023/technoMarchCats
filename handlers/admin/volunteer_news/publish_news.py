@@ -23,7 +23,7 @@ router.message.middleware(MediaGroupMiddleware())
                 StatesGroupFilter(AddVolunteerNewsStates))  # сработает при любом состоянии добавления новости
 async def cancel(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer("Добавление новости отменено", reply_markup=keyboards.ReplyKeyboardRemove())
+    await message.answer("Добавление обращения отменено", reply_markup=keyboards.ReplyKeyboardRemove())
     await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
@@ -31,7 +31,7 @@ async def cancel(message: Message, state: FSMContext):
 async def heading(message: Message, state: FSMContext):
     await state.update_data(heading=message.text)
     await state.set_state(AddVolunteerNewsStates.add_images)
-    await message.answer("Отправьте приложения к новости (до 10 фотографий)")
+    await message.answer("Отправьте приложения к обращению (до 10 фотографий)")
 
 
 @router.message(AddVolunteerNewsStates.add_images)

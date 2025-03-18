@@ -9,5 +9,5 @@ router = Router()
 @router.callback_query(F.data == "volunteer_news")
 async def post_news_callback(callback: CallbackQuery, state: FSMContext):
     await state.set_state(AddVolunteerNewsStates.heading)
-    await callback.message.answer("Введите заголовок новости", reply_markup=keyboards.cancel_keyboard())
+    await callback.message.answer("Введите заголовок обращения", reply_markup=keyboards.cancel_keyboard())
     await callback.answer()
