@@ -1,6 +1,9 @@
 from data import db_session
+from data.animal_to_animal_tag import AnimalToAnimalTag
+from data.animals import Animal
 from data.animals_tags import AnimalTag
 from config import ANIMAL_TAGS
+from sqlalchemy import select
 
 
 def best_match(tags: list):
@@ -12,5 +15,3 @@ def best_match(tags: list):
         names_dict[name] = len(set(tags) & set(tags_in_db))
     best_matches = sorted(names_dict, key=names_dict.get, reverse=True)[:3]
     return best_matches
-
-
