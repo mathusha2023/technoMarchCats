@@ -24,7 +24,6 @@ router.message.middleware(MediaGroupMiddleware())
 async def cancel(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Добавление обращения отменено", reply_markup=keyboards.ReplyKeyboardRemove())
-    await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
 @router.message(F.text, AddVolunteerNewsStates.heading)
@@ -70,6 +69,6 @@ async def add_images(message: Message, state: FSMContext, album: List[Message] =
             except TelegramBadRequest:
                 logging.info(f"Пользователя {user.id} не существует!")
 
-    await message.answer("Новость опубликована!")
+    await message.answer("Обращение опубликовано!")
     await state.clear()
     await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())

@@ -2,4 +2,4 @@ from .animals import callback_router as animals_callback_router, add_animal_rout
 from .news import callback_router as publish_news_callback_router, publish_news_router
 from .statistics import callback_router as stats_callback
 from .users_control import users_control_router, users_control_callback_router
-from .volunteer_news import callback_router as publish_volunteer_news_callback_router, publish_volunteer_news_router
+from .volunteers import callback_router as publish_volunteer_news_callback_router, publish_volunteer_news_router
