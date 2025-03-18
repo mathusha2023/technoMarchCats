@@ -1,15 +1,16 @@
 import logging
 
 from aiogram import Router, F
-from aiogram.enums import ContentType
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, LabeledPrice, PreCheckoutQuery, Message
 
 import config
 import strings
 import keyboards
-from filters import BannedFilter
+from filters import BannedFilter, StatesGroupFilter
 from data.db_session import create_session
 from data.users import User
+from states import PaymentsStates
 
 router = Router()
 
@@ -17,6 +18,14 @@ router = Router()
 @router.message(BannedFilter())
 async def answer_for_banned(callback: CallbackQuery):
     await callback.message.answer(strings.BANNED_USERS_MESSAGE, reply_markup=keyboards.ReplyKeyboardRemove())
+
+
+@router.message(F.text == "🚫 Отмена",
+                StatesGroupFilter(PaymentsStates))  # сработает при любом состоянии обновления животного
+async def cancel(message: Message, state: FSMContext):  # отмена изменения какого-то конкретного параметра кота
+    await state.clear()
+    await message.answer("Платёж отменён!", reply_markup=keyboards.ReplyKeyboardRemove())
+    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
 
 
 @router.callback_query(F.data == "contact")
@@ -40,24 +49,30 @@ async def start_about_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "fast_pay")
-async def fast_pay_callback(callback: CallbackQuery):
-    price = LabeledPrice(label="Поддержать приют", amount=config.PAYMENT_PRICE * 100)  # в копейках (руб)
-
-    await callback.message.answer_invoice(
-                           title="Поддержать приют",
-                           description="Поддержать приют копейкой",
-                           provider_token=config.PAYMENTS_TOKEN,
-                           currency="rub",
-                           photo_url="https://cs6.livemaster.ru/storage/51/8d/e9304e78c01418b5ea956d3be36a.jpg",
-                           photo_width=416,
-                           photo_height=234,
-                           photo_size=416,
-                           is_flexible=False,
-                           prices=[price],
-                           start_parameter="one-month-subscription",
-                           payload="test-invoice-payload")
-
+async def fast_pay_callback(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Введите сумму (RUB), которую хотите пожертвовать:",
+                                  reply_markup=keyboards.cancel_keyboard())
+    await state.set_state(PaymentsStates.pricing)
     await callback.answer()
+
+
+@router.message(F.text.isdigit(), PaymentsStates.pricing)
+async def pricing_payment(message: Message):
+    price = LabeledPrice(label="Поддержать приют", amount=int(message.text) * 100)  # в копейках (руб)
+
+    await message.answer_invoice(
+        title="Поддержать приют",
+        description="Поддержать приют копейкой",
+        provider_token=config.PAYMENTS_TOKEN,
+        currency="rub",
+        photo_url="https://cs6.livemaster.ru/storage/51/8d/e9304e78c01418b5ea956d3be36a.jpg",
+        photo_width=416,
+        photo_height=234,
+        photo_size=416,
+        is_flexible=False,
+        prices=[price],
+        start_parameter="one-month-subscription",
+        payload="test-invoice-payload")
 
 
 # pre checkout  (must be answered in 10 seconds)
@@ -68,11 +83,20 @@ async def pre_checkout_query(pre_checkout_q: PreCheckoutQuery):
 
 # successful payment
 @router.message(F.successful_payment)
-async def successful_payment(message: Message):
+async def successful_payment(message: Message, state: FSMContext):
     logging.info("SUCCESSFUL PAYMENT!")
-    payment_info = message.successful_payment.json()
+    await state.clear()
+    payment_info = message.successful_payment.model_dump_json()
     logging.debug(payment_info)
-    await message.answer(f"Спасибо! Платеж на сумму {message.successful_payment.total_amount // 100} {message.successful_payment.currency} прошел успешно!")
+    await message.answer(
+        f"Спасибо! Платеж на сумму {message.successful_payment.total_amount // 100} {message.successful_payment.currency} прошел успешно!",
+        reply_markup=keyboards.ReplyKeyboardRemove())
+    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+
+
+@router.message(PaymentsStates.pricing)
+async def pricing_payment(message: Message):
+    await message.answer("Введите корректную сумму!")
 
 
 @router.callback_query(F.data == "help_um")
