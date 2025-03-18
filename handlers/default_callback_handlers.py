@@ -7,6 +7,7 @@ from aiogram.types import CallbackQuery, LabeledPrice, PreCheckoutQuery, Message
 import config
 import strings
 import keyboards
+from data.statistics import Statistic
 from filters import BannedFilter, StatesGroupFilter
 from data.db_session import create_session
 from data.users import User
@@ -59,8 +60,8 @@ async def fast_pay_callback(callback: CallbackQuery, state: FSMContext):
 @router.message(F.text.isdigit(), PaymentsStates.pricing)
 async def pricing_payment(message: Message):
     int_price = int(message.text)
-    if int_price < 60:
-        return await message.answer("Платёж должен составлять не менее 60 рублей")
+    if int_price < 60 or int_price > 250000:
+        return await message.answer("Платёж должен составлять не менее 60 и не более 250 000 рублей")
 
     price = LabeledPrice(label="Поддержать приют", amount=int_price * 100)  # в копейках (руб)
 
@@ -89,6 +90,12 @@ async def pre_checkout_query(pre_checkout_q: PreCheckoutQuery):
 @router.message(F.successful_payment)
 async def successful_payment(message: Message, state: FSMContext):
     logging.info("SUCCESSFUL PAYMENT!")
+    session = create_session()
+    statistic = session.query(Statistic).first()
+    statistic.donatesCount += 1
+    statistic.donatesSum += message.successful_payment.total_amount // 100
+    session.commit()
+
     await state.clear()
     payment_info = message.successful_payment.model_dump_json()
     logging.debug(payment_info)
