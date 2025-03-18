@@ -25,8 +25,10 @@ async def answer_for_banned(callback: CallbackQuery):
                 StatesGroupFilter(PaymentsStates))  # сработает при любом состоянии обновления животного
 async def cancel(message: Message, state: FSMContext):  # отмена изменения какого-то конкретного параметра кота
     await state.clear()
+    session = create_session()
+    user = session.query(User).where(User.id == message.from_user.id).first()
     await message.answer("Платёж отменён!", reply_markup=keyboards.ReplyKeyboardRemove())
-    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+    await message.answer(strings.HELP, reply_markup=keyboards.help_um_keyboard(user.isVolunteer))
 
 
 @router.callback_query(F.data == "contact")
@@ -111,7 +113,7 @@ async def pricing_payment(message: Message):
 
 
 @router.callback_query(F.data == "help_um")
-async def help_up_callback(callback: CallbackQuery):
+async def help_um_callback(callback: CallbackQuery):
     session = create_session()
     user = session.query(User).where(User.id == callback.from_user.id).first()
 
