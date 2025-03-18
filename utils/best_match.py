@@ -23,5 +23,8 @@ def best_match(tags: list):
         names_dict[name] = len(set(tags) & set(animal_tags))
     
     # Сортируем по количеству совпадений и возвращаем лучшее совпадение
-    best_match = sorted(names_dict.items(), key=lambda x: x[1], reverse=True)[0][0]  # Берем первый элемент
-    return best_match
+    try:
+        best_match = sorted(names_dict.items(), key=lambda x: x[1], reverse=True)[0][0]  # Берем первый элемент
+        return best_match
+    except IndexError:
+        return "Не найдено"

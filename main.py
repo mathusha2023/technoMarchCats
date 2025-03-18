@@ -28,4 +28,4 @@ if __name__ == "__main__":
     add_base_tags_to_db()  # добавление базовых тегов в базу данных, если их там нет
     add_banned_users_to_cash()  # добавление заблокированных пользователей из базы данных в кеш
     logging.basicConfig(level=logging.INFO)
-    asyncio.run(main())
+    asyncio.run(main()) 
