@@ -58,7 +58,11 @@ async def fast_pay_callback(callback: CallbackQuery, state: FSMContext):
 
 @router.message(F.text.isdigit(), PaymentsStates.pricing)
 async def pricing_payment(message: Message):
-    price = LabeledPrice(label="Поддержать приют", amount=int(message.text) * 100)  # в копейках (руб)
+    int_price = int(message.text)
+    if int_price < 60:
+        return await message.answer("Платёж должен составлять не менее 60 рублей")
+
+    price = LabeledPrice(label="Поддержать приют", amount=int_price * 100)  # в копейках (руб)
 
     await message.answer_invoice(
         title="Поддержать приют",
