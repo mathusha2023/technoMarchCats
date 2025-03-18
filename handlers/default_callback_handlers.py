@@ -32,6 +32,11 @@ async def start_about_callback(callback: CallbackQuery):
     await callback.message.edit_text(strings.INFO, reply_markup=keyboards.to_start_menu_keyboard())
 
 
+@router.callback_query(F.data == "help_um")
+async def help_up_callback(callback: CallbackQuery):
+    await callback.message.edit_text(strings.HELP, reply_markup=keyboards.help_um_keyboard(False))
+
+
 @router.callback_query(F.data == "start")
 async def start_callback(callback: CallbackQuery):
     await callback.message.edit_text(strings.GREETING, reply_markup=keyboards.start_keyboard())

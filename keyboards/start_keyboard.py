@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from config import DONATE_LINK
+# from config import DONATE_LINK
 
 
 def start_keyboard():
@@ -8,6 +8,6 @@ def start_keyboard():
     builder.row(InlineKeyboardButton(text="🐈 Смотреть котов", callback_data="watch_animals"))
     builder.row(InlineKeyboardButton(text="📒 Подробнее о приюте", callback_data="start_about"),
                 InlineKeyboardButton(text="📞 Связь с нами", callback_data="start_contact"))
-    builder.row(InlineKeyboardButton(text="📥 Поддержать нас",
-                                     url=DONATE_LINK))
+    builder.row(InlineKeyboardButton(text="📥 Помочь нам",
+                                     callback_data="help_um"))
     return builder.as_markup()

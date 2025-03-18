@@ -23,3 +23,4 @@ from .users_list_keyboard import users_list_keyboard
 from .cancel_searching_user_keyboard import cancel_user_searching_keyboard
 from .admin_user_control_keyboard import admin_user_control_keyboard
 from .hide_message_keyboard import hide_message_keyboard
+from .help_up_keyboard import help_um_keyboard
