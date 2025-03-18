@@ -24,7 +24,6 @@ router.message.middleware(MediaGroupMiddleware())
 async def cancel(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Добавление новости отменено", reply_markup=keyboards.ReplyKeyboardRemove())
-    await message.answer(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
 @router.message(F.text, AddVolunteerNewsStates.heading)
