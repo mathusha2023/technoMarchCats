@@ -14,6 +14,7 @@ from utils.generate_next_animal_card import generate_next_animal_card
 
 router = Router()
 
+index = 0
 
 @router.callback_query(F.data == "volunteer")
 async def volunteer_callback(callback: CallbackQuery):
@@ -151,3 +152,5 @@ async def max_age_up_filter_callback(callback: CallbackQuery):
     session.commit()
     await generate_animal_filter_message(callback.message, animal_filter, edit=True)
     await callback.answer()
+    
+
