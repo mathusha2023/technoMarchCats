@@ -122,8 +122,12 @@ async def help_um_callback(callback: CallbackQuery):
 
 @router.callback_query(F.data == "partners_list")
 async def help_up_callback(callback: CallbackQuery):
+    text = "Вот список магазинов-партнеров:\n\n"
 
-    await callback.message.edit_text("Вот список магазинов-партнеров:", reply_markup=keyboards.to_help_um_menu_keyboard())
+    for p in config.PARTNERS:
+        text += f"🔹 {p}\n"
+
+    await callback.message.edit_text(text, reply_markup=keyboards.to_help_um_menu_keyboard())
     await callback.answer()
 
 
