@@ -15,6 +15,18 @@ from utils.generate_next_animal_card import generate_next_animal_card
 router = Router()
 
 
+@router.callback_query(F.data == "volunteer")
+async def volunteer_callback(callback: CallbackQuery):
+    session = create_session()
+    user = session.query(User).where(User.id == callback.from_user.id).first()
+    user.isVolunteer = not user.isVolunteer
+    session.commit()
+    await callback.message.edit_reply_markup(reply_markup=keyboards.help_um_keyboard(user.isVolunteer))
+
+    callback_text = "Теперь вы волонтёр!" if user.isVolunteer else "Вы больше не волонтёр!"
+    await callback.answer(callback_text)
+
+
 @router.callback_query(F.data == "watch_animals")
 async def cats_callback(callback: CallbackQuery, state: FSMContext):
     await state.set_state(WatchAnimalsStates.watching)
