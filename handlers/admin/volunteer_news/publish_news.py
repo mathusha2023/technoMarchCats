@@ -60,7 +60,7 @@ async def add_images(message: Message, state: FSMContext, album: List[Message] =
         media_group = album_builder.build()
 
         users = session.query(User).where(
-            User.id != message.from_user.id).all()  # получаем всех пользователей кроме отправителя новости
+            User.id != message.from_user.id, User.isVolunteer==True).all()  # получаем всех волонтеров кроме отправителя новости
         for user in users:
             if user.id in BANNED_USERS:  # заблокированным пользователям новости не нужны
                 continue
