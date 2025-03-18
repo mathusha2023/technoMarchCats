@@ -8,4 +8,4 @@ class TestStates(StatesGroup):
     question4 = State()
     question5 = State()
     question6 = State()
-    question7 = State()
+    answer = State()
