@@ -8,6 +8,8 @@ async def generate_user_info_message(user: User, message: Message, edit=False):
     text = f"""Пользователь {user.firstName}:
 tg: @{user.username}
 роль: {get_text_access_level(user.accessLevel)}"""
+    if user.isVolunteer:
+        text += "\nВолонтёр"
     if user.isBanned:
         text += "\nЗаблокирован"
     is_admin = user.accessLevel > 1
