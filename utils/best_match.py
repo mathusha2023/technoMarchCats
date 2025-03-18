@@ -10,6 +10,7 @@ def best_match(tags: list):
     for name in names:
         tags_in_db = session.query(AnimalTag).join(AnimalToAnimalTag).join(Animal).filter(Animal.name == name).all()
         names_dict[name] = len(set(tags) & set(tags_in_db))
-    best_match = max(names_dict, key=names_dict.get)
-    return best_match
+    best_matches = sorted(names_dict, key=names_dict.get, reverse=True)[:3]
+    return best_matches
+
 
