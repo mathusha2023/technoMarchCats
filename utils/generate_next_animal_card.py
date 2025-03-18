@@ -68,7 +68,8 @@ async def generate_next_animal_card(user_id, message: Message):
     user.lastWatchedAnimal = animal.id
     session.commit()
 
-    text = f"""Привет! Я {animal.name}, {get_text_gender(animal.gender)}, мне {animal.get_age()} лет.\n{animal.description}\nТеги: {", ".join(map(lambda x: x.tag, animal.tags))}"""
+    y, m = animal.get_age()
+    text = f"""Привет! Я {animal.name}, {get_text_gender(animal.gender)}, мне {y} лет и {m} месяцев.\n{animal.description}\nТеги: {", ".join(map(lambda x: x.tag, animal.tags))}"""
 
     album_builder = MediaGroupBuilder(
         caption=text
