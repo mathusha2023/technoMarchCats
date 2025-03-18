@@ -118,6 +118,13 @@ async def help_up_callback(callback: CallbackQuery):
     await callback.message.edit_text(strings.HELP, reply_markup=keyboards.help_um_keyboard(user.isVolunteer))
 
 
+@router.callback_query(F.data == "partners_list")
+async def help_up_callback(callback: CallbackQuery):
+
+    await callback.message.edit_text("Вот список магазинов-партнеров:", reply_markup=keyboards.to_help_um_menu_keyboard())
+    await callback.answer()
+
+
 @router.callback_query(F.data == "start")
 async def start_callback(callback: CallbackQuery):
     await callback.message.edit_text(strings.GREETING, reply_markup=keyboards.start_keyboard())

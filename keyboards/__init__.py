@@ -27,3 +27,4 @@ from .help_um_keyboard import help_um_keyboard
 from .test_keyboard import test_reply_keyboard
 from .admin_volunteer_interaction import admin_volunteer_interaction_keyboard
 from .volunteers_list_keyboard import volunteers_list_keyboard
+from .to_help_um_menu_keyboard import to_help_um_menu_keyboard
