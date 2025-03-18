@@ -20,4 +20,4 @@ class Animal(SqlAlchemyBase):
     def get_age(self):
         now = date.today()
         delta = now - self.birthDate
-        return delta.days // 365
+        return delta.days // 365, delta.days % 365 // 30
