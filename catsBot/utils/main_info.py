@@ -4,13 +4,27 @@ from sqlalchemy import select, func
 from data.animals import Animal
 from data.animals_images import AnimalImage
 
-def get_animal_info(animal_name: str):
+def get_animal_info(id_: str):
     session = create_session()
-    animal = session.query(Animal).where(Animal.name == animal_name).first()
-    data = {}  # сюда заносим данные животного в виде словаря
-    if animal is None:
-        return
-    data["birthday"] = data["birthDate"]
-    data["photos"] = [data["AnimalImage"]]
-    return data
+    animal = session.query(Animal).where(Animal.id == id_).first()
 
+    if animal is None:
+        return None  # Если животное не найдено, возвращаем None
+
+    # Преобразуем объект Animal в словарь
+    data = animal.__dict__
+
+    # Убираем ненужные ключи (например, "_sa_instance_state")
+    data = {key: value for key, value in data.items() if not key.startswith("_")}
+
+    # Добавляем поле "birthday" (если нужно)
+    data["birthday"] = data.pop("birthDate", None)
+
+    # Добавляем фото (строковые значения URL)
+    data["photos"] = [image.image for image in animal.images] if animal.images else []
+
+    # Добавляем теги (строковые значения)
+    data["tags"] = animal.tags
+
+    print(data)  # Для отладки
+    return data

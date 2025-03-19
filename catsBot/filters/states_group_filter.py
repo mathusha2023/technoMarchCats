@@ -4,6 +4,7 @@ from aiogram.fsm.state import StatesGroup
 from aiogram.types import Message
 
 
+# фильтр, возвращающий True, если текущее состояние принадлежит переданной StatesGroup
 class StatesGroupFilter(BaseFilter):
     def __init__(self, states_group: StatesGroup):
         self.states_group = states_group

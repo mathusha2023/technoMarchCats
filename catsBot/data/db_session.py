@@ -28,7 +28,7 @@ def global_init(db_url):
     with engine.connect() as conn:
         result = conn.execute(sa.text("SELECT 1 FROM information_schema.tables WHERE table_schema='public'"))
         if result.fetchone() is None:
-            SqlAlchemyBase.metadata.create_all(engine)
+            SqlAlchemyBase.metadata.create_all(engine)  # если в БД нет таблиц, создаем их
 
 
 def create_session() -> Session:

@@ -1,7 +1,7 @@
 import sqlalchemy
 from .db_session import SqlAlchemyBase
 
-
+# таблица с картинками животных
 class AnimalImage(SqlAlchemyBase):
     __tablename__ = "animalImages"
 

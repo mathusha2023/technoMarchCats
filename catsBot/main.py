@@ -26,6 +26,6 @@ async def main():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     db_session.global_init(config.DATABASE_URL)  # инициализация базы данных
-    db_pre_init()  # добавление базовых тегов в базу данных, если их там нет
+    db_pre_init()  # добавление предварительных данных в базу данных
     add_banned_users_to_cash()  # добавление заблокированных пользователей из базы данных в кеш
     asyncio.run(main())
