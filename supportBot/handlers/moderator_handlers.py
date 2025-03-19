@@ -40,7 +40,7 @@ async def start(message: Message):
         reply_markup=all_questions_keyboard())
 
 
-@router.message(F.text == "Отмена", ModeratorFilter())
+@router.message(F.text == "🚫 Отмена", ModeratorFilter())
 async def add_moderator_cancel(message: Message, state: FSMContext, bot: Bot):
     msg_id: int | None = (await state.get_data()).get("msg_id", None)
     if msg_id is not None:

@@ -21,7 +21,7 @@ async def start(message: Message):
     await message.answer(config.GREETING, reply_markup=faq_keyboard())
 
 
-@router.message(F.text == "Отмена")
+@router.message(F.text == "🚫 Отмена")
 async def cancel(message: Message, state: FSMContext):
     await message.delete()
     await message.answer("Выберите один из пунктов ниже:", reply_markup=faq_keyboard())
