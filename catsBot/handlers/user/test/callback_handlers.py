@@ -80,7 +80,7 @@ async def question5(message: Message, state: FSMContext):
  <b>3.</b> Нет, предпочитаю кота, который не требует много внимания.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question6)
 
-@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]]), TestStates.question6)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]), TestStates.question6)
 async def question6(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
