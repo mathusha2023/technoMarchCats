@@ -119,7 +119,7 @@ async def delete_moderator(message: Message, state: FSMContext, bot: Bot):
     await message.answer(format_moderators(), reply_markup=delete_moderator_keyboard())
 
 
-@router.message(F.text == "🚫 Отменить приглашение модератора", AdminStates.watching_moderators)
+@router.message(F.text == "❌ Отменить приглашение модератора", AdminStates.watching_moderators)
 async def delete_uncommited_moderator_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.delete_uncommited_moderator)
     await message.answer(f"Введите номер модератора, приглашение которого вы хотите отменить",
