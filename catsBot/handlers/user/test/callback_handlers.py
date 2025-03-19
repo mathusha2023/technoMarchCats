@@ -99,10 +99,8 @@ async def answer(message: Message, state: FSMContext):
 
     main_info = get_animal_info(id_)
     
-    await message.answer(await generate_animal_card_by_state(main_info, message))
-    
-    #await message.answer(f"вам подойдет котик {name}", reply_markup=keyboards.ReplyKeyboardRemove())
-    #await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+    await generate_animal_card_by_state(main_info, message)
+    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
     await state.clear()
     
 @router.message(F.text, StatesGroupFilter(TestStates))
