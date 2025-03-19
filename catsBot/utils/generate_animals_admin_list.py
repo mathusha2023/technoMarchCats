@@ -4,7 +4,7 @@ from data.animals import Animal
 from utils.get_text_gender import get_text_gender
 import keyboards
 
-
+# 
 async def generate_animals_admin_list(message: Message):
     session = create_session()
 
