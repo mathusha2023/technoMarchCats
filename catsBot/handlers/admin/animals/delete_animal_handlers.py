@@ -3,7 +3,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from data import db_session
 import keyboards
+from data.animal_requests import AnimalRequest
 from data.animals import Animal
+from data.animals_images import AnimalImage
 from middlewares import MediaGroupMiddleware
 from states import DeleteAnimalStates
 
@@ -33,7 +35,17 @@ async def delete_yes(message: Message, state: FSMContext):
     data = await state.get_data()
     session = data["session"]
     animal = data["animal"]
+    animal_requests = session.query(AnimalRequest).where(AnimalRequest.animalId == animal.id).all()
+    animal_images = animal.images
     session.delete(animal)
+
+    for r in animal_requests:  # удаляем все запросы на это животное
+        session.delete(r)
+    session.commit()
+
+    for im in animal_images:  # удаляем все картинки этого животное
+        session.delete(im)
+
     session.commit()
 
     await state.set_state(DeleteAnimalStates.index_input)

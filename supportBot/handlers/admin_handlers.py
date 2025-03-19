@@ -27,7 +27,7 @@ async def start(message: Message):
                          reply_markup=admin_keyboard())
 
 
-@router.message(F.text == "Отмена")
+@router.message(F.text == "🚫 Отмена")
 async def add_moderator_cancel(message: Message, state: FSMContext):
     await state.clear()
     await message.delete()
@@ -77,7 +77,7 @@ async def change_greeting(message: Message, state: FSMContext):
 <b>{config.GREETING}</b>""", reply_markup=admin_keyboard())
 
 
-@router.message(F.text == "❌ Удалить модератора", AdminStates.watching_moderators)
+@router.message(F.text == "‍💻 Управление модераторами", AdminStates.watching_moderators)
 async def delete_moderator_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.delete_moderator)
     await message.answer(f"Введите номер модератора 👨‍💻, которого вы хотите разжаловать.", reply_markup=cancel_keyboard())
@@ -119,7 +119,7 @@ async def delete_moderator(message: Message, state: FSMContext, bot: Bot):
     await message.answer(format_moderators(), reply_markup=delete_moderator_keyboard())
 
 
-@router.message(F.text == "❌ Отменить приглашение модератора", AdminStates.watching_moderators)
+@router.message(F.text == "Отменить приглашение модератора", AdminStates.watching_moderators)
 async def delete_uncommited_moderator_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.delete_uncommited_moderator)
     await message.answer(f"Введите номер модератора 👨‍💻, приглашение которого вы хотите отменить",
@@ -158,7 +158,7 @@ async def add_moderator_request(message: Message, state: FSMContext):
     await message.answer("Пожалуйста, пришлите telegram user id модератора 👨‍💻.", reply_markup=cancel_keyboard())
 
 
-@router.message(F.text == "👨‍💻 Управление модераторами")
+@router.message(F.text == "‍💻 Управление модераторами")
 async def control_moderators(message: Message, state: FSMContext):
     await state.set_state(AdminStates.watching_moderators)
     await message.answer(format_moderators(), reply_markup=delete_moderator_keyboard())
