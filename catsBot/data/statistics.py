@@ -5,6 +5,7 @@ from .db_session import SqlAlchemyBase
 from .animal_to_animal_tag import AnimalToAnimalTag
 
 
+# объект статистики, один на всю программу
 class Statistic(SqlAlchemyBase):
     __tablename__ = 'statistic'
 

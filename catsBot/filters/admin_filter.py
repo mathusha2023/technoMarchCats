@@ -4,6 +4,7 @@ from data import db_session
 from data.users import User
 
 
+#  фильтр на права доступа к функциям администратора
 class AdminFilter(BaseFilter):
     async def __call__(self, message: Message) -> bool:
         session = db_session.create_session()

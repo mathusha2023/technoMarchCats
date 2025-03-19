@@ -4,6 +4,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message, TelegramObject
 
 
+# мидльварь для вытягивания всех объектов медиа группы
 class MediaGroupMiddleware(BaseMiddleware):
     ALBUM_DATA: Dict[str, List[Message]] = {}
 

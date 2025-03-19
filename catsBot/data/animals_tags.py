@@ -5,6 +5,7 @@ from .db_session import SqlAlchemyBase
 from .animal_to_animal_tag import AnimalToAnimalTag
 
 
+# теги животных
 class AnimalTag(SqlAlchemyBase):
     __tablename__ = "animalTags"
 
