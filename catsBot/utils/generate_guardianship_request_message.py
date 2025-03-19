@@ -3,6 +3,7 @@ from aiogram.types import Message
 from keyboards import delete_request_keyboard
 
 
+# генерация заявки об опекунстве для админа
 async def generate_guardianship_request_message(request, message: Message):
     user = request.user
     animal = request.animal

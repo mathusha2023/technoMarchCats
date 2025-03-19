@@ -4,6 +4,7 @@ from data.users import User
 from utils.get_text_access_level import get_text_access_level
 
 
+# сообщение с информацией о пользователе для админа
 async def generate_user_info_message(user: User, message: Message, edit=False):
     text = f"""Пользователь {user.firstName}:
 tg: @{user.username}

@@ -29,7 +29,7 @@ async def animals_list_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "admin_menu")
-async def back_callback(callback: CallbackQuery):
+async def admin_menu_callback(callback: CallbackQuery):
     await callback.message.edit_text(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 

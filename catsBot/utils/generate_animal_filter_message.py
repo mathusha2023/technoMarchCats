@@ -2,7 +2,7 @@ from aiogram.types import Message
 import keyboards
 from utils.get_text_gender import get_text_gender
 
-
+# сообщение фильтра при просмотре животных
 async def generate_animal_filter_message(message: Message, animal_filter, edit=False, add_keyboard=True):
     text = f"""Настройте свой кошачий фильтр! Сейчас он выглядит так:
         

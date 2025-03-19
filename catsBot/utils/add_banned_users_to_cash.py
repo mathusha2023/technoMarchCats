@@ -3,7 +3,7 @@ from config import BANNED_USERS
 from data.users import User
 
 
-def add_banned_users_to_cash():
+def add_banned_users_to_cash():  # добавляет забаненых юзеров в список для более быстрого поиска
     session = db_session.create_session()
     banned_users = session.query(User).where(User.isBanned).all()
     BANNED_USERS.extend([user.id for user in banned_users])

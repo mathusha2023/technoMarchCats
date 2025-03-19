@@ -9,7 +9,7 @@ from data.animals import Animal
 from aiogram.utils.media_group import MediaGroupBuilder
 from utils.get_text_gender import get_text_gender
 
-
+# генерация карточки следующего животного в списке животных
 async def generate_next_animal_card(user_id, message: Message):
     session = create_session()
     user = session.query(User).where(User.id == user_id).first()
