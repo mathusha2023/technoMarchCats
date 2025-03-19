@@ -12,9 +12,9 @@ from filters import StatesGroupFilter
 router = Router()
 
 results = {
-        "1": ["Спокойный", "Ласковый", "Послушный", "Домашний", "Серый", "Дымчатый"],
-        "2": ["Игривый", "Активный", "Любопытный", "Рыжий", "Полосатый", "Пушистый"],
-        "3": ["Гордый", "Неприступный", "Непривередливый", "Черный", "Белый", "Пятнистый"]
+        "1️⃣": ["Спокойный", "Ласковый", "Послушный", "Домашний", "Серый", "Дымчатый"],
+        "2️⃣": ["Игривый", "Активный", "Любопытный", "Рыжий", "Полосатый", "Пушистый"],
+        "3️⃣": ["Гордый", "Неприступный", "Непривередливый", "Черный", "Белый", "Пятнистый"]
     }
 
 @router.message(F.text == "🚫 Отмена",
@@ -24,7 +24,7 @@ async def cancel(message: Message, state: FSMContext):
     await message.answer("Тест прерван", reply_markup=keyboards.ReplyKeyboardRemove())
     await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
 
-@router.message(F.text.in_(["1", "2", "3"]), TestStates.question1)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]), TestStates.question1)
 async def question1(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
@@ -36,7 +36,7 @@ async def question1(message: Message, state: FSMContext):
     await state.set_state(TestStates.question2)
 
 
-@router.message(F.text.in_(["1", "2", "3"]), TestStates.question2)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]), TestStates.question2)
 async def question2(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
@@ -47,7 +47,7 @@ async def question2(message: Message, state: FSMContext):
  <b>3.</b> Немного, но готов(а) обеспечить комфорт.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question3)
 
-@router.message(F.text.in_(["1", "2", "3"]), TestStates.question3)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]), TestStates.question3)
 async def question3(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
@@ -58,7 +58,7 @@ async def question3(message: Message, state: FSMContext):
  <b>3.</b> Белый, пушистый.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question4)
 
-@router.message(F.text.in_(["1", "2", "3"]), TestStates.question4)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]), TestStates.question4)
 async def question4(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
@@ -69,7 +69,7 @@ async def question4(message: Message, state: FSMContext):
  <b>3.</b> Независимый и неприступный.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question5)
 
-@router.message(F.text.in_(["1", "2", "3"]), TestStates.question5)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]), TestStates.question5)
 async def question5(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
@@ -80,7 +80,7 @@ async def question5(message: Message, state: FSMContext):
  <b>3.</b> Нет, предпочитаю кота, который не требует много внимания.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question6)
 
-@router.message(F.text.in_(["1", "2", "3"]), TestStates.question6)
+@router.message(F.text.in_(["1️⃣", "2️⃣", "3️⃣"]]), TestStates.question6)
 async def question6(message: Message, state: FSMContext):
     data = await state.get_data()
     data[message.text] += 1
