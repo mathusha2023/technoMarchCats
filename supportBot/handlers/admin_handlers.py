@@ -77,7 +77,7 @@ async def change_greeting(message: Message, state: FSMContext):
 <b>{config.GREETING}</b>""", reply_markup=admin_keyboard())
 
 
-@router.message(F.text == "Удалить модератора", AdminStates.watching_moderators)
+@router.message(F.text == "❌ Удалить модератора", AdminStates.watching_moderators)
 async def delete_moderator_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.delete_moderator)
     await message.answer(f"Введите номер модератора 👨‍💻, которого вы хотите разжаловать.", reply_markup=cancel_keyboard())
@@ -119,7 +119,7 @@ async def delete_moderator(message: Message, state: FSMContext, bot: Bot):
     await message.answer(format_moderators(), reply_markup=delete_moderator_keyboard())
 
 
-@router.message(F.text == "Отменить приглашение модератора", AdminStates.watching_moderators)
+@router.message(F.text == "❌ Отменить приглашение модератора", AdminStates.watching_moderators)
 async def delete_uncommited_moderator_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.delete_uncommited_moderator)
     await message.answer(f"Введите номер модератора 👨‍💻, приглашение которого вы хотите отменить",
@@ -141,7 +141,7 @@ async def delete_uncommited_moderator(message: Message, state: FSMContext):
     await message.answer(format_moderators(), reply_markup=delete_moderator_keyboard())
 
 
-@router.message(F.text == "Отзывы&Пожелания")
+@router.message(F.text == "📖 Отзывы&Пожелания")
 async def get_faq(message: Message):
     session = db_session.create_session()
     suggestions = session.query(Suggestion).all()
@@ -152,26 +152,26 @@ async def get_faq(message: Message):
         await message.answer("Пока еще не было оставлено ни одного отзыва или пожелания от пользователей. 🤷‍♂️")
 
 
-@router.message(F.text == "Добавить модератора")
+@router.message(F.text == "➕ Добавить модератора")
 async def add_moderator_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.adding_moderator)
     await message.answer("Пожалуйста, пришлите telegram user id модератора 👨‍💻.", reply_markup=cancel_keyboard())
 
 
-@router.message(F.text == "Управление модераторами")
+@router.message(F.text == "👨‍💻 Управление модераторами")
 async def control_moderators(message: Message, state: FSMContext):
     await state.set_state(AdminStates.watching_moderators)
     await message.answer(format_moderators(), reply_markup=delete_moderator_keyboard())
 
 
-@router.message(F.text == "Изменить приветствие")
+@router.message(F.text == "✏️ Изменить приветствие")
 async def change_greeting_request(message: Message, state: FSMContext):
     await state.set_state(AdminStates.changing_greeting)
     await message.answer(f"""Пожалуйста, пришлите новый текст 📝 приветствия! Сейчас оно выглядит так:
 <b>{config.GREETING}</b>""", reply_markup=cancel_keyboard())
 
 
-@router.message(F.text == "Изменить вопросы по умолчанию")
+@router.message(F.text == "📨 Изменить вопросы по умолчанию")
 async def get_default_answers_questions(message: Message, state: FSMContext):
     await state.set_state(AdminStates.default_answers_questions)
     await message.answer(format_default_questions(), reply_markup=change_default_questions_keyboard())

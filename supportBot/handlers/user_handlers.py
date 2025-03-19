@@ -21,7 +21,7 @@ async def start(message: Message):
     await message.answer(config.GREETING, reply_markup=faq_keyboard())
 
 
-@router.message(F.text == "Отмена")
+@router.message(F.text == "🚫 Отмена")
 async def cancel(message: Message, state: FSMContext):
     await message.delete()
     await message.answer("Выберите один из пунктов ниже:", reply_markup=faq_keyboard())
@@ -70,19 +70,19 @@ async def get_suggestion(message: Message, state: FSMContext, bot: Bot):
                          reply_markup=faq_keyboard())
 
 
-@router.message(F.text == "Часто задаваемые вопросы")
+@router.message(F.text == "📗 Часто задаваемые вопросы")
 async def default_questions(message: Message):
     await message.answer(format_default_questions(), reply_markup=faq_keyboard())
 
 
-@router.message(F.text == "Задать вопрос")
+@router.message(F.text == "📩 Задать вопрос")
 async def ask_question(message: Message, state: FSMContext):
     await message.answer("Пожалуйста, введите свой вопрос. Модератор 👨‍💻 постарается ответить на него как можно быстрее.",
                          reply_markup=cancel_keyboard())
     await state.set_state(UserStates.asking_question)
 
 
-@router.message(F.text == "Поделиться впечатлениями с нами")
+@router.message(F.text == "💡 Поделиться впечатлениями с нами")
 async def vote(message: Message, state: FSMContext):
     await message.answer(
         "Пожалуйста, поделитесь Вашими впечатлениями от нашего бота. 📝 Что понравилось, что не очень,"

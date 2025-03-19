@@ -11,7 +11,7 @@ router = Router()
 router.message.filter(AdminFilter())
 
 
-@router.message(F.text == "Изменить ответы", AdminStates.default_answers_questions)
+@router.message(F.text == "✏️ Изменить ответы", AdminStates.default_answers_questions)
 async def f(message: Message, state: FSMContext):
     if config.QUESTIONS:
         await message.answer("Укажите номер вопроса 📖, ответ на который вы желаете изменить.",
@@ -46,7 +46,7 @@ async def f(message: Message, state: FSMContext):
     await message.answer(format_default_questions(), reply_markup=change_default_questions_keyboard())
 
 
-@router.message(F.text == "Добавить вопрос/ответ", AdminStates.default_answers_questions)
+@router.message(F.text == "➕ Добавить вопрос/ответ", AdminStates.default_answers_questions)
 async def f(message: Message, state: FSMContext):
     await message.answer("Введите новый вопрос",
                          reply_markup=cancel_keyboard())
@@ -74,7 +74,7 @@ async def f(message: Message, state: FSMContext):
     await message.answer(format_default_questions(), reply_markup=change_default_questions_keyboard())
 
 
-@router.message(F.text == "Удалить вопрос", AdminStates.default_answers_questions)
+@router.message(F.text == "❌ Удалить вопрос", AdminStates.default_answers_questions)
 async def f(message: Message, state: FSMContext):
     if config.QUESTIONS:
         await message.answer("Укажите номер вопроса, который вы желаете удалить.", reply_markup=cancel_keyboard())
