@@ -26,5 +26,4 @@ def get_animal_info(id_: str):
     # Добавляем теги (строковые значения)
     data["tags"] = animal.tags
 
-    print(data)  # Для отладки
     return data

@@ -5,7 +5,7 @@ from data.animals_tags import AnimalTag
 from sqlalchemy import select
 
 
-def best_match(tags: list):
+def best_match(tags: list):  # поиск наилучшего совпадения по тегам
     session = db_session.create_session()
     
     # Получаем id всех животных

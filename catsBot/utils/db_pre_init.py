@@ -4,7 +4,7 @@ from config import ANIMAL_TAGS
 from data.statistics import Statistic
 
 
-def db_pre_init():
+def db_pre_init():  # 
     session = db_session.create_session()
     for tag in ANIMAL_TAGS:
         old_tag = session.query(AnimalTag).where(AnimalTag.tag == tag).first()

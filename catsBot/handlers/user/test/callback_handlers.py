@@ -100,8 +100,17 @@ async def answer(message: Message, state: FSMContext):
     main_info = get_animal_info(id_)
     
     await generate_animal_card_by_state(main_info, message)
-    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+    await message.answer("можете оставить заявку", reply_markup=keyboards.final_test_keyboard())
+    await message.answer()
+    
+@router.callback_query(F.data, StatesGroupFilter(TestStates))
+async def take(callback_query: CallbackQuery, state: FSMContext):
+    if callback_query.data == "take":
+        pass
+    await callback_query.message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
     await state.clear()
+    await state.set_state(TestStates.test)
+    await message.answer()
     
 @router.message(F.text, StatesGroupFilter(TestStates))
 async def badInput(message: Message, state: FSMContext):
