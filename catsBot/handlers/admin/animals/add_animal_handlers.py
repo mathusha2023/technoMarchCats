@@ -39,12 +39,12 @@ async def adding_gender(message: Message, state: FSMContext):
 
 
 @router.message(F.text, AddAnimalStates.adding_gender)
-async def adding_gender(message: Message):
+async def adding_gender_incorrect(message: Message):
     await message.answer("Пришлите 1, если у нас мальчик, и 2 - если девочка!")
 
 
 @router.message(F.text, AddAnimalStates.adding_birthday)
-async def adding_age(message: Message, state: FSMContext):
+async def adding_birthday(message: Message, state: FSMContext):
     try:
         date_ = datetime.strptime(message.text, "%d.%m.%Y").date()
         if date_ > datetime.today().date():
