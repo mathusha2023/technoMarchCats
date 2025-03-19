@@ -3,7 +3,7 @@ from data.animals import Animal
 from data.animals_images import AnimalImage
 
 
-async def add_animal_to_db(data):  # добавить животное в бд
+async def add_animal_to_db(data):  # добавить животное из словаря в бд
     session = data["db_session"]
     a = session.query(Animal).order_by(desc(Animal.id)).first()  # получаем id последнего животного для подвязки фотогафий
     if a is None:
