@@ -26,4 +26,4 @@ def best_match(tags: list):  # поиск наилучшего совпаден�
         best_match = sorted(ids_dict.items(), key=lambda x: x[1], reverse=True)[0][0]  # Берем первый элемент
         return best_match
     except IndexError:
-        return "Не найдено"
+        return None
