@@ -14,15 +14,16 @@ from data.users import User
 from data.animals import Animal
 from utils.send_message_to_all_administrators import send_message_to_all_administrators
 
-
 router = Router()
+
 
 @router.callback_query(F.data == "test")
 async def test_callback(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("""<b>1. Какой у вас образ жизни?</b>
     <b>1️⃣</b> Спокойный, люблю проводить время дома.
     <b>2️⃣</b> Активный ️, часто гуляю или занимаюсь спортом.
-    <b>3️⃣</b> Занимаюсь работой или учебой, но люблю проводить время с животными.""", reply_markup=keyboards.test_reply_keyboard())
+    <b>3️⃣</b> Занимаюсь работой или учебой, но люблю проводить время с животными.""",
+                                  reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question1)
     await state.update_data({"1️⃣": 0, "2️⃣": 0, "3️⃣": 0})
     await callback.answer()
@@ -48,20 +49,21 @@ async def take_cat(message: Message, state: FSMContext, bot: Bot):
     last_request = session.query(AnimalRequest).where(and_(AnimalRequest.userId == user.id,
                                                            AnimalRequest.animalId == animal.id)).first()  # ищем заявку от пользователя на это животное в базе данных
     if last_request:  # если такой запрос уже существует, то заново подавать запрос не будем
-        return await message.answer(
-            "Заявка на этого котика ужа была подана и ожидает рассмотрения администратором. Пожалуйста, дождитесь обратной связи!")
+        await message.answer(
+            "Заявка на этого котика ужа была подана и ожидает рассмотрения администратором. Пожалуйста, дождитесь обратной связи!",
+            reply_markup=keyboards.ReplyKeyboardRemove())
+    else:
 
-    animal_request = AnimalRequest()
-    animal_request.user = user
-    animal_request.animal = animal
-    session.add(animal_request)
-    session.commit()
+        animal_request = AnimalRequest()
+        animal_request.user = user
+        animal_request.animal = animal
+        session.add(animal_request)
+        session.commit()
 
-    await send_message_to_all_administrators(bot,
-                                             "Подана новая заявка!")  # оповещаем всех администраторов о подаче заявки
+        await send_message_to_all_administrators(bot,
+                                                 "Подана новая заявка!")  # оповещаем всех администраторов о подаче заявки
 
-    await message.answer("Ваша заявка отправлена! Администратор свяжется с вами в ближайшее время",
-                         reply_markup=keyboards.ReplyKeyboardRemove())
+        await message.answer("Ваша заявка отправлена! Администратор свяжется с вами в ближайшее время",
+                             reply_markup=keyboards.ReplyKeyboardRemove())
     await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
     await state.clear()
-
