@@ -53,7 +53,6 @@ async def take_cat(message: Message, state: FSMContext, bot: Bot):
             "Заявка на этого котика ужа была подана и ожидает рассмотрения администратором. Пожалуйста, дождитесь обратной связи!",
             reply_markup=keyboards.ReplyKeyboardRemove())
     else:
-
         animal_request = AnimalRequest()
         animal_request.user = user
         animal_request.animal = animal

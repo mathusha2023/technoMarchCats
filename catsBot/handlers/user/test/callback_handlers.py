@@ -98,13 +98,18 @@ async def answer(message: Message, state: FSMContext):
     data = await state.get_data()
     
     id_ = best_match(results[max(data, key=data.get)])
-    await state.update_data(animal_id=id_)
+    if (not id_ is None):
+        await state.update_data(animal_id=id_)
 
-    main_info = get_animal_info(id_)
+        main_info = get_animal_info(id_)
 
-    await message.answer("Вам подойдёт этот котик:", reply_markup=keyboards.final_test_keyboard())
-    await generate_animal_card_by_state(main_info, message)
-    await state.set_state(TestStates.result)
+        await message.answer("Вам подойдёт этот котик:", reply_markup=keyboards.final_test_keyboard())
+        await generate_animal_card_by_state(main_info, message)
+        await state.set_state(TestStates.result)
+    else:
+        await message.answer("ничего не найдено", reply_markup=keyboards.final_test_keyboard())
+        await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+        await state.clear()
 
 
 @router.message(F.text, StatesGroupFilter(TestStates))
