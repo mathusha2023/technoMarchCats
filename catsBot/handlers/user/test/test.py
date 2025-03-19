@@ -13,5 +13,5 @@ async def test_callback(callback: CallbackQuery, state: FSMContext):
     <b>2.</b> Активный ️, часто гуляю или занимаюсь спортом.
     <b>3.</b> Занимаюсь работой или учебой, но люблю проводить время с животными.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question1)
-    await state.update_data({"1": 0, "2": 0, "3": 0})
+    await state.update_data({"1️⃣": 0, "2️⃣": 0, "3️⃣": 0})
     await callback.answer()
