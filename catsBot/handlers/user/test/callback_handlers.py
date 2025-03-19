@@ -5,6 +5,7 @@ import keyboards
 from aiogram import Router, F
 from utils.best_match import best_match
 from utils.generate_animal_card_by_state import generate_animal_card_by_state
+from utils.main_info import get_animal_info
 import strings
 from filters import StatesGroupFilter
 
@@ -98,7 +99,7 @@ async def answer(message: Message, state: FSMContext):
     
     main_info = get_animal_info(name)
     
-    await message.answer(generate_animal_card_by_state(main_info, message))
+    await message.answer(await generate_animal_card_by_state(main_info, message))
     
     #await message.answer(f"вам подойдет котик {name}", reply_markup=keyboards.ReplyKeyboardRemove())
     #await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
