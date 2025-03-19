@@ -95,9 +95,9 @@ async def question6(message: Message, state: FSMContext):
 async def answer(message: Message, state: FSMContext):
     data = await state.get_data()
     
-    name = best_match(results[max(data, key=data.get)])
-    
-    main_info = get_animal_info(name)
+    id_ = best_match(results[max(data, key=data.get)])
+
+    main_info = get_animal_info(id_)
     
     await message.answer(await generate_animal_card_by_state(main_info, message))
     

@@ -8,23 +8,22 @@ from sqlalchemy import select
 def best_match(tags: list):
     session = db_session.create_session()
     
-    # Получаем имена всех животных
-    names = session.execute(select(Animal.name)).scalars().all()
+    # Получаем id всех животных
+    ids = session.execute(select(Animal.id)).scalars().all()
     
     # Создаем словарь для хранения количества совпадений тегов
-    names_dict = {name: 0 for name in names}
+    ids_dict = {id_: 0 for id_ in ids}
     
     # Для каждого животного находим его теги и считаем совпадения
-    for name in names:
-        id_ = session.execute(select(Animal.id).where(Animal.name == name)).scalar()
+    for id_ in ids:
         animal_tags = session.query(AnimalTag).join(AnimalToAnimalTag).filter(AnimalToAnimalTag.c.animalId == id_).all()
 
         # Считаем количество совпадений тегов
-        names_dict[name] = len(set(tags) & set(animal_tags))
+        ids_dict[id_] = len(set(tags) & set(animal_tags))
     
     # Сортируем по количеству совпадений и возвращаем лучшее совпадение
     try:
-        best_match = sorted(names_dict.items(), key=lambda x: x[1], reverse=True)[0][0]  # Берем первый элемент
+        best_match = sorted(ids_dict.items(), key=lambda x: x[1], reverse=True)[0][0]  # Берем первый элемент
         return best_match
     except IndexError:
         return "Не найдено"

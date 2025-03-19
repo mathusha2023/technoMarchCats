@@ -7,25 +7,18 @@ from data.animals_images import AnimalImage
 def get_animal_info(animal_name: str):
     session = create_session()
     query = (
-        select(
-            Animal.name,
-            Animal.gender,
-            Animal.birthDate,
-            Animal.description,
-            AnimalImage,
-            func.group_concat(AnimalTag.name) # Агрегируем теги в строку
+        session.query(Animal)
+        .options(
+            joinedload(Animal.images),  # Загружаем связанные фото
+            joinedload(Animal.tags)     # Загружаем связанные теги
         )
-        .join(AnimalImage, Animal.images, isouter=True)  # Присоединяем таблицу AnimalImage (LEFT JOIN)
-        .join(AnimalToAnimalTag, Animal.tags, isouter=True)  # Присоединяем таблицу AnimalToAnimalTag (LEFT JOIN)
-        .join(AnimalTag, AnimalToAnimalTag.c.animal_tag_id == AnimalTag.id, isouter=True)  # Присоединяем таблицу AnimalTag (LEFT JOIN)
-        .where(Animal.name == animal_name)
-        .group_by(Animal.id)  # Группируем по животному, чтобы агрегировать теги
-        .limit(1)  # Ограничиваем результат одним животным
+        .filter(Animal.name == animal_name)
+        .first()  # Получаем первое совпадение
     )
     data = session.execute(query).fetchone()._asdict()
     if data is None:
         return None
     data["birthday"] = data["birthDate"]
-    data["photos"] = [data["AnimalImage"]]
+    data["photos"] = data["AnimalImage"]
     return data
-
+    
