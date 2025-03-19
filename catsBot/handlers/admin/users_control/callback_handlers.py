@@ -98,7 +98,7 @@ async def ban_user_callback(callback: CallbackQuery, state: FSMContext):
 
 
 @router.callback_query(F.data.startswith("make_admin"))
-async def ban_user_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
+async def make_admin_callback(callback: CallbackQuery, state: FSMContext, bot: Bot):
     data = await state.get_data()
     try:
         session = data["session"]
@@ -118,6 +118,6 @@ async def ban_user_callback(callback: CallbackQuery, state: FSMContext, bot: Bot
 
 
 @router.callback_query(F.data.startswith("cancel_user_controlling"))
-async def ban_user_callback(callback: CallbackQuery, state: FSMContext):
+async def cancel_user_controlling_callback(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.message.delete()

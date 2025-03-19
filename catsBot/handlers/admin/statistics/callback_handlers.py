@@ -13,7 +13,7 @@ router = Router()
 
 
 @router.callback_query(F.data == "hide_stats")
-async def delete_request_callback(callback: CallbackQuery):
+async def hide_stats_callback(callback: CallbackQuery):
     await callback.message.delete()
 
 

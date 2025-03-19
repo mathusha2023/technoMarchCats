@@ -4,6 +4,8 @@ from sqlalchemy import select, func
 from data.animals import Animal
 from data.animals_images import AnimalImage
 
+
+# получаем словарь информации о животном по id
 def get_animal_info(id_: str):
     session = create_session()
     animal = session.query(Animal).where(Animal.id == id_).first()

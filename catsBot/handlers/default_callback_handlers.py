@@ -45,7 +45,7 @@ async def help_um_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "partners_list")
-async def help_up_callback(callback: CallbackQuery):
+async def partners_list_callback(callback: CallbackQuery):
     text = "Вот список магазинов-партнеров:\n\n"
 
     for p in config.PARTNERS:

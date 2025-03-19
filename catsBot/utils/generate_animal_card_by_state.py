@@ -4,7 +4,7 @@ from aiogram.utils.media_group import MediaGroupBuilder
 from utils.get_text_gender import get_text_gender
 
 
-async def generate_animal_card_by_state(data, message: Message):  # генерация карточки животного по данным
+async def generate_animal_card_by_state(data, message: Message):  # генерация карточки животного из словаря
     name = data["name"]
     gender = data["gender"]
     birthday: date = data["birthday"]

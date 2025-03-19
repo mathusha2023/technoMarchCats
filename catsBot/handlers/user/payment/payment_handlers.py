@@ -83,5 +83,5 @@ async def successful_payment(message: Message, state: FSMContext):
 
 
 @router.message(PaymentsStates.pricing)
-async def pricing_payment(message: Message):
+async def pricing_payment_incorrect(message: Message):
     await message.answer("Введите корректную сумму!")

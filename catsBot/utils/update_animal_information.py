@@ -2,6 +2,7 @@ from data.animals import Animal
 from data.animals_images import AnimalImage
 
 
+# обновление информации животного из словаря
 async def update_animal_information(data):
     session = data["session"]
     animal_id = data["id"]

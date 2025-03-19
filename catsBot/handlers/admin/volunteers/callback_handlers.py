@@ -12,7 +12,7 @@ router = Router()
 
 
 @router.callback_query(F.data == "admin_menu")
-async def back_callback(callback: CallbackQuery):
+async def admin_menu_callback(callback: CallbackQuery):
     await callback.message.edit_text(strings.ADMIN_MENU_CAPTION, reply_markup=keyboards.admin_menu_keyboard())
 
 
@@ -23,14 +23,14 @@ async def volunteers_interaction_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "volunteer_news")
-async def post_news_callback(callback: CallbackQuery, state: FSMContext):
+async def volunteer_news_callback(callback: CallbackQuery, state: FSMContext):
     await state.set_state(AddVolunteerNewsStates.heading)
     await callback.message.answer("Введите заголовок обращения", reply_markup=keyboards.cancel_keyboard())
     await callback.answer()
 
 
 @router.callback_query(F.data == "volunteer_list")  # отображаем первую страницу списка волонтеров
-async def watch_users_callback(callback: CallbackQuery):
+async def volunteer_list_callback(callback: CallbackQuery):
     session = db_session.create_session()
     users = session.query(User).where(User.isVolunteer).limit(4).all()
     users_count = session.query(User).where(User.isVolunteer).count()
@@ -40,7 +40,7 @@ async def watch_users_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("volunteer_control_right_"))  # перелистывание списка пользователей вправо по кнопке
-async def user_control_right_callback(callback: CallbackQuery):
+async def volunteer_control_right_callback(callback: CallbackQuery):
     fourth_number = int(
         callback.data.split("_")[-1])  # получаем номер последней четверки, в которой находился пользователь
     session = db_session.create_session()
@@ -53,7 +53,7 @@ async def user_control_right_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("volunteer_control_left_"))  # перелистывание списка пользователей влево по кнопке
-async def user_control_left_callback(callback: CallbackQuery):
+async def volunteer_control_left_callback(callback: CallbackQuery):
     fourth_number = int(
         callback.data.split("_")[-1])  # получаем номер последней четверки, в которой находился пользователь
     session = db_session.create_session()
@@ -65,7 +65,7 @@ async def user_control_left_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data.startswith("volunteer_control_"))  # выбор администратором пользователя совершен
-async def user_control(callback: CallbackQuery, state: FSMContext):
+async def volunteer_control_callback(callback: CallbackQuery, state: FSMContext):
     user_id = int(callback.data.split("_")[-1])  # получаем telegram user_id выбранного пользователя
     session = db_session.create_session()
     user = session.query(User).where(User.id == user_id).first()
@@ -74,9 +74,3 @@ async def user_control(callback: CallbackQuery, state: FSMContext):
     await generate_user_info_message(user, callback.message)
     await state.update_data(user=user, session=session)
     await callback.answer()
-
-
-# @router.callback_query(F.data.startswith("cancel_user_controlling"))
-# async def ban_user_callback(callback: CallbackQuery, state: FSMContext):
-#     await state.clear()
-#     await callback.message.delete()
