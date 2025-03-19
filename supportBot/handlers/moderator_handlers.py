@@ -25,7 +25,7 @@ async def start(message: Message):
     session.add(moder)
     session.commit()
     await message.answer(
-        "Здравствуйте! Вы были назначены модератором приюта. Вы можете отвечать на вопросы пользователей.",
+        "Здравствуйте! 👋 Вы были назначены модератором 👨‍💻 приюта. Вы можете отвечать на вопросы пользователей.",
         reply_markup=all_questions_keyboard())
 
 
@@ -36,7 +36,7 @@ async def start(message: Message):
     m.name = message.from_user.first_name
     session.commit()
     await message.answer(
-        "Здравствуйте! Вы были назначены модератором приюта. Вы можете отвечать на вопросы пользователей.",
+        "Здравствуйте! 👋 Вы были назначены модератором 👨‍💻 приюта. Вы можете отвечать на вопросы пользователей.",
         reply_markup=all_questions_keyboard())
 
 
@@ -47,7 +47,7 @@ async def add_moderator_cancel(message: Message, state: FSMContext, bot: Bot):
         await bot.delete_message(message.from_user.id, msg_id)
     await message.delete()
     await state.clear()
-    await message.answer("Будьте готовы отвечать на вопросы людей, интересующихся приютом!",
+    await message.answer("Будьте готовы отвечать на вопросы людей 👥, интересующихся приютом!",
                          reply_markup=all_questions_keyboard())
 
 
@@ -63,7 +63,7 @@ async def add_moderator_cancel(message: Message):
             session.add(message_id)
             session.commit()
     else:
-        await message.answer("В настоящий момент у гостей приюта нет к вам вопросов",
+        await message.answer("В настоящий момент у гостей приюта нет к вам вопросов. 🤷‍♂️",
                              reply_markup=all_questions_keyboard())
 
 
@@ -89,11 +89,11 @@ async def answer_question(message: Message, state: FSMContext, bot: Bot):
     question: Question = session.query(Question).get(data["question_id"])
     moderator = session.query(Moderator).get(question.moderator)
     await bot.send_message(question.sender,
-                           **Text(f"Получен ответ на ваш вопрос от модератора ", Underline(moderator.name),
+                           **Text(f"Получен ответ на ваш вопрос от модератора 👨‍💻 ", Underline(moderator.name),
                                   "\n",
                                   Pre(question.text),
                                   f"Он выглядит так:\n", Pre(message.text)).as_kwargs())
-    await message.answer(f"Ваш ответ на вопрос номер {question.id} успешно отправлен!",
+    await message.answer(f"Ваш ответ на вопрос номер {question.id} успешно отправлен! ✅",
                          reply_markup=all_questions_keyboard())
     for m in question.message_ids:
         await bot.edit_message_text(chat_id=message.from_user.id, message_id=m.message_id,
