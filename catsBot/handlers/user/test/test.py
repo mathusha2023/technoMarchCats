@@ -9,9 +9,9 @@ router = Router()
 @router.callback_query(F.data == "test")
 async def test_callback(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("""<b>1. Какой у вас образ жизни?</b>
-    <b>1.</b> Спокойный, люблю проводить время дома.
-    <b>2.</b> Активный ️, часто гуляю или занимаюсь спортом.
-    <b>3.</b> Занимаюсь работой или учебой, но люблю проводить время с животными.""", reply_markup=keyboards.test_reply_keyboard())
+    <b>1️⃣</b> Спокойный, люблю проводить время дома.
+    <b>2️⃣</b> Активный ️, часто гуляю или занимаюсь спортом.
+    <b>3️⃣</b> Занимаюсь работой или учебой, но люблю проводить время с животными.""", reply_markup=keyboards.test_reply_keyboard())
     await state.set_state(TestStates.question1)
     await state.update_data({"1️⃣": 0, "2️⃣": 0, "3️⃣": 0})
     await callback.answer()
