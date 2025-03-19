@@ -1,8 +1,8 @@
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
-from states import TestStates
+from states import TestStates, WatchAnimalsStates
 import keyboards
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from utils.best_match import best_match
 from utils.generate_animal_card_by_state import generate_animal_card_by_state
 from utils.main_info import get_animal_info
@@ -104,14 +104,41 @@ async def answer(message: Message, state: FSMContext):
     
     await generate_animal_card_by_state(main_info, message)
     await message.answer("можете оставить заявку", reply_markup=keyboards.final_test_keyboard())
+    await state.set_state(TestStates.result)
     
-@router.callback_query(F.data, StatesGroupFilter(TestStates))
-async def take(callback_query: CallbackQuery, state: FSMContext):
-    if callback_query.data == "take":
+@router.message(F.text == "в меню", TestStates.result, StatesGroupFilter(TestStates))
+async def take(message: Message, state: FSMContext):
+    if F.text == "📥 Хочу взять!":
         pass
-    await callback_query.message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
+    await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
     await state.clear()
-    await state.set_state(TestStates.test)
+
+@router.message(F.text == "📥 Хочу взять!", TestStates.result, StatesGroupFilter(TestStates))
+async def take_cat(message: Message, state: FSMContext, bot: Bot):
+    session = db_session.create_session()
+
+    user = session.query(User).where(User.id == message.from_user.id).first()
+    animal = session.query(Animal).where(
+        Animal.id == user.lastWatchedAnimal).first()  # получаем последнее просмотренное пользователем животное
+    if animal is None:  # последнее просмотренное пользователем животное имеет ID 0, то есть при последней попытке просмотра животное не было найдено
+        return await message.answer("Сейчас вы не можете взять животное!")
+
+    last_request = session.query(AnimalRequest).where(and_(AnimalRequest.userId == user.id, AnimalRequest.animalId == animal.id)).first()  # ищем заявку от пользователя на это животное в базе данных
+    if last_request:  # если такой запрос уже существует, то заново подавать запрос не будем
+        return await message.answer("Заявка на этого котика ужа была подана и ожидает рассмотрения администратором. Пожалуйста, дождитесь обратной связи!")
+
+    animal_request = AnimalRequest()
+    animal_request.user = user
+    animal_request.animal = animal
+    session.add(animal_request)
+    session.commit()
+
+    await send_message_to_all_administrators(bot, "Подана новая заявка!")  # оповещаем всех администраторов о подаче заявки
+
+    await state.update_data({"took": True})  # если котика только взяли ставим флаг
+
+    await message.answer("Ваша заявка отправлена! Администратор свяжется с вами в ближайшее время. Идём дальше?",
+                         reply_markup=keyboards.watch_animals_after_taking_keyboard())
 
     
 @router.message(F.text, StatesGroupFilter(TestStates))
