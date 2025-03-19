@@ -107,7 +107,7 @@ async def answer(message: Message, state: FSMContext):
         await generate_animal_card_by_state(main_info, message)
         await state.set_state(TestStates.result)
     else:
-        await message.answer("ничего не найдено", reply_markup=keyboards.final_test_keyboard())
+        await message.answer("К сожалению, у нас нет никого подходящего", reply_markup=keyboards.ReplyKeyboardRemove())
         await message.answer(strings.GREETING, reply_markup=keyboards.start_keyboard())
         await state.clear()
 
