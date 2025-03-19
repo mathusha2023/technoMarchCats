@@ -9,3 +9,4 @@ class TestStates(StatesGroup):
     question5 = State()
     question6 = State()
     answer = State()
+    result = State()
