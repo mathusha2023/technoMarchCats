@@ -11,7 +11,7 @@ def format_moderators():
     for m in true_moderators:
         s = f"{m.id}. {m.name} - {m.user_id}. Вопросов в очереди: {len(m.questions)}\n"
         res += s
-    res += "\n############################################\n\n"
+    res += "\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖\n\n"
     res += "Приглашения отправлены модераторам:\n"
     for m in uncommited_moderators:
         s = f"{m.id}. User id {m.user_id}\n"
