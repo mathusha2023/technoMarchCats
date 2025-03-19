@@ -3,7 +3,7 @@ import sqlalchemy
 from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
 
-
+# заявки на опекунство
 class AnimalRequest(SqlAlchemyBase):
     __tablename__ = 'animal_requests'
 

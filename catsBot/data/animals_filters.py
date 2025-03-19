@@ -4,6 +4,7 @@ from .db_session import SqlAlchemyBase
 from .animal_filter_to_animal_tag import AnimalFilterToAnimalTag
 
 
+# фильтры животных (у каждого пользователя свой)
 class AnimalFilter(SqlAlchemyBase):
     __tablename__ = "animalsFilters"
 
