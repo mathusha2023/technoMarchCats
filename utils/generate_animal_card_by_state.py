@@ -1,7 +1,6 @@
 from datetime import date
 from aiogram.types import Message
 from aiogram.utils.media_group import MediaGroupBuilder
-
 from utils.get_text_gender import get_text_gender
 
 
