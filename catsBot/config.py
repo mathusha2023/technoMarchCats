@@ -2,7 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 
-load_dotenv("catsBot/.env.bot")
+load_dotenv(".env.bot")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 PAYMENTS_TOKEN = os.getenv("PAYMENTS_TOKEN")
