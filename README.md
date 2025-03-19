@@ -16,19 +16,26 @@
 git clone https://github.com/mathusha2023/technoMarchCats
 ```
 
-* создайте файл `.env.database` в корне проекта и вставьте туда следующие строки:
+* создайте файл `.env.database` в папке catsBot и вставьте туда следующие строки:
 ```env
 POSTGRES_DB=db
 POSTGRES_USER=user
 POSTGRES_PASSWORD=user
 ```
 
-* создайте файл `.env.bot` в корне проекта и вставьте туда следующие строки:
+* создайте файл `.env.bot` в папке catsBot и вставьте туда следующие строки:
 ```env
 BOT_TOKEN=[Your bot token]
+PAYMENTS_TOKEN=[Your payments token]
 DATABASE_URL=postgresql://user:user@database/db
 SUPERADMIN_ID=[Your telegram id]
 DONATE_LINK=[Your donate link]
+```
+
+* создайте файл `.env` в папке supportBot и вставьте туда следующие строки:
+```env
+BOT_TOKEN=[Your bot token]
+ADMIN_ID=[Your telegram id]
 ```
 
 * используйте команды

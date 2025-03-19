@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy.orm import Session
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
@@ -17,7 +18,7 @@ def global_init(db_url):
     if not db_url or not db_url.strip():
         raise Exception("Необходимо указать файл базы данных.")
 
-    print(f"Подключение к базе данных по адресу {db_url}")
+    logging.debug(f"Подключение к базе данных по адресу {db_url}")
 
     engine = sa.create_engine(db_url, echo=False, max_overflow=1100, pool_size=1000)
     __factory = orm.sessionmaker(bind=engine)
