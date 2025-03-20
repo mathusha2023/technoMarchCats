@@ -11,14 +11,14 @@ router = Router()
 router.message.filter(AdminFilter())
 
 
-@router.message(F.text == "Изменить ответы", AdminStates.default_answers_questions)
+@router.message(F.text == "✏️ Изменить ответы", AdminStates.default_answers_questions)
 async def f(message: Message, state: FSMContext):
     if config.QUESTIONS:
-        await message.answer("Укажите номер вопроса 📖, ответ на который вы желаете изменить.",
+        await message.answer("Укажите номер вопроса, ответ на который вы желаете изменить",
                              reply_markup=cancel_keyboard())
         await state.set_state(AdminStates.change_questions)
     else:
-        await message.answer("В настоящий момент вопросы отсутствуют. 🤷‍♂️")
+        await message.answer("В настоящий момент вопросы отсутствуют")
 
 
 @router.message(F.text.isdigit(), AdminStates.change_questions)
@@ -27,7 +27,7 @@ async def f(message: Message, state: FSMContext):
     if num > len(config.QUESTIONS):
         await message.answer("Пожалуйста, введите существующее число!", reply_markup=cancel_keyboard())
     else:
-        await message.answer("Введите новый ответ на вопрос.",
+        await message.answer("Введите новый ответ на вопрос",
                              reply_markup=cancel_keyboard())
         await state.set_state(AdminStates.editing_question)
         await state.update_data(num=num - 1)
@@ -40,13 +40,13 @@ async def f(message: Message, state: FSMContext):
         if n == num:
             config.QUESTIONS[q] = message.text
             break
-    await message.answer("Успешно! ✅ Теперь вопросы выглядят так:")
+    await message.answer("Успешно! Теперь вопросы выглядят так:")
     await state.set_data({})
     await state.set_state(AdminStates.default_answers_questions)
     await message.answer(format_default_questions(), reply_markup=change_default_questions_keyboard())
 
 
-@router.message(F.text == "Добавить вопрос/ответ", AdminStates.default_answers_questions)
+@router.message(F.text == "➕ Добавить вопрос/ответ", AdminStates.default_answers_questions)
 async def f(message: Message, state: FSMContext):
     await message.answer("Введите новый вопрос",
                          reply_markup=cancel_keyboard())
@@ -60,7 +60,7 @@ async def f(message: Message, state: FSMContext):
         await state.set_state(AdminStates.adding_answer)
         await state.update_data(question=message.text)
     else:
-        await message.answer("Такой вопрос уже существует! 💁‍♂️ Пожалуйста, введите новый вопрос.",
+        await message.answer("Такой вопрос уже существует! Пожалуйста, введите новый вопрос.",
                              reply_markup=cancel_keyboard())
 
 
@@ -68,19 +68,19 @@ async def f(message: Message, state: FSMContext):
 async def f(message: Message, state: FSMContext):
     q = (await state.get_data())["question"]
     config.QUESTIONS[q] = message.text
-    await message.answer("Успешно! ✅ Теперь вопросы выглядят так:")
+    await message.answer("Успешно! Теперь вопросы выглядят так:")
     await state.set_data({})
     await state.set_state(AdminStates.default_answers_questions)
     await message.answer(format_default_questions(), reply_markup=change_default_questions_keyboard())
 
 
-@router.message(F.text == "Удалить вопрос", AdminStates.default_answers_questions)
+@router.message(F.text == "❌ Удалить вопрос", AdminStates.default_answers_questions)
 async def f(message: Message, state: FSMContext):
     if config.QUESTIONS:
-        await message.answer("Укажите номер вопроса, который вы желаете удалить.", reply_markup=cancel_keyboard())
+        await message.answer("Укажите номер вопроса, который вы желаете удалить", reply_markup=cancel_keyboard())
         await state.set_state(AdminStates.deleting_question)
     else:
-        await message.answer("В настоящий момент вопросы отсутствуют. 🤷‍♂️")
+        await message.answer("В настоящий момент вопросы отсутствуют")
 
 
 @router.message(F.text.isdigit(), AdminStates.deleting_question)
@@ -93,7 +93,7 @@ async def f(message: Message, state: FSMContext):
             if n == num - 1:
                 del config.QUESTIONS[q]
                 break
-        await message.answer("Успешно! ✅ Теперь вопросы выглядят так:")
+        await message.answer("Успешно! Теперь вопросы выглядят так:")
         await state.set_data({})
         await state.set_state(AdminStates.default_answers_questions)
         await message.answer(format_default_questions(), reply_markup=change_default_questions_keyboard())

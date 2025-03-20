@@ -8,27 +8,28 @@ services:
     restart: unless-stopped
     env_file:
       - catsBot/.env.database
-    ports:
-      - "5432:5432"
-    expose:
-      - 5432
-#    volumes:
-#      - db_data:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+#    expose:
+#      - 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
+  cats_bot:
+    build: catsBot/
+    depends_on:
+      - database
+    restart: unless-stopped
+    env_file:
+      - catsBot/.env.bot
 
-#  cats_bot:
-#    build: catsBot/
-#    depends_on:
-#      - database
-#    restart: unless-stopped
-#    env_file:
-#      - catsBot/.env.bot
-#
-#  support_bot:
-#    build: supportBot/
-#    restart: unless-stopped
-#    env_file:
-#      - supportBot/.env
+  support_bot:
+    build: supportBot/
+    restart: unless-stopped
+    env_file:
+      - supportBot/.env
+    volumes:
+      - sql_data:/var/lib/sqlite/data
 
   adminer:
     container_name: adminer
@@ -39,7 +40,8 @@ services:
     depends_on:
       - database
 
-#
-#volumes:
-#  db_data:
+
+volumes:
+  db_data:
+  sql_data:
 

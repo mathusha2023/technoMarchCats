@@ -13,7 +13,7 @@ async def generate_animals_admin_list(message: Message):
     if animals:
         text = ""
         for animal in animals:
-            s = f"{animal.id}. {animal.name}, {get_text_gender(animal.gender)}, {animal.get_age()} лет\n"
+            s = f"{animal.id}. {animal.name}, {get_text_gender(animal.gender)}, {animal.get_age()[0]} лет\n"
             text += s
     else:
         text = "Пока что в базе данных нет животных:/"
