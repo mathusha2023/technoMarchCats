@@ -1,6 +1,7 @@
 from config import QUESTIONS
 
 
+# возвращает в виде текста часто задаваемые вопросы с ответами
 def format_default_questions():
     res = ""
     for i, q in enumerate(QUESTIONS, start=1):

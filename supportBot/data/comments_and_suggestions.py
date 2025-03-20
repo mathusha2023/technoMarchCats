@@ -2,6 +2,7 @@ import sqlalchemy
 from .db_session import SqlAlchemyBase
 
 
+# таблица отзывов и пожеланий
 class Suggestion(SqlAlchemyBase):
     __tablename__ = "suggestions"
 

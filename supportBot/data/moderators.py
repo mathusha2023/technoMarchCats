@@ -2,6 +2,7 @@ import sqlalchemy
 from .db_session import SqlAlchemyBase
 
 
+# таблица модераторов
 class Moderator(SqlAlchemyBase):
     __tablename__ = "moderators"
 

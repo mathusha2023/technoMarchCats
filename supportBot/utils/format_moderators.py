@@ -3,6 +3,7 @@ from data.moderators import Moderator
 from data.uncommited_moderators import UncommitedModerator
 
 
+# возвращает в виде текста всех модераторов
 def format_moderators():
     res = "Модераторы хакатона:\n"
     session = db_session.create_session()

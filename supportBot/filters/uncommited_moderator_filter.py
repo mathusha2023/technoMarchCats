@@ -4,6 +4,7 @@ from data import db_session
 from data.uncommited_moderators import UncommitedModerator
 
 
+# фильтр, является ли пользователь модератором, который еще не зашел в бота
 class UncommitedModeratorFilter(BaseFilter):
     async def __call__(self, message: Message) -> bool:
         session = db_session.create_session()

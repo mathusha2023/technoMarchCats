@@ -95,6 +95,8 @@ async def answer_question(message: Message, state: FSMContext, bot: Bot):
                                   f"Он выглядит так:\n", Pre(message.text)).as_kwargs())
     await message.answer(f"Ваш ответ на вопрос номер {question.id} успешно отправлен!",
                          reply_markup=all_questions_keyboard())
+
+    # зачеркиваем сообщения (один вопрос может быть в разных сообщениях), на которые был дан ответ
     for m in question.message_ids:
         await bot.edit_message_text(chat_id=message.from_user.id, message_id=m.message_id,
                                     **format_with_author(question.sender_name, question.text, crossed=True),

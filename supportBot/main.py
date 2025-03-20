@@ -10,9 +10,9 @@ from handlers import include_routers
 
 
 async def main():
-    if not os.path.isdir("db"):
+    if not os.path.isdir("db"):  # если папки с базой данных не существует, создаем ее
         os.mkdir("db")
-    db_session.global_init("db/base.db")
+    db_session.global_init("db/base.db")  # инициализация базы данных
     bot = Bot(token=config.BOT_TOKEN, default=DefaultBotProperties(parse_mode="html"))
     dp = Dispatcher(storage=MemoryStorage())
     include_routers(dp)

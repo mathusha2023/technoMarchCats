@@ -32,8 +32,9 @@ async def cancel(message: Message, state: FSMContext):
 async def get_question(message: Message, state: FSMContext, bot: Bot):
     session = db_session.create_session()
     try:
-        moderator = min(session.query(Moderator).all(), key=lambda m: len(m.questions))
-    except ValueError:
+        moderator = min(session.query(Moderator).all(),
+                        key=lambda m: len(m.questions))  # определяем модератора, который должен ответить на этот вопрос
+    except ValueError:  # если модераторов нет
         await message.answer("К сожалению, сейчас модераторы отсутствуют. Пожалуйста, попробуйте позже",
                              reply_markup=faq_keyboard())
         await state.clear()

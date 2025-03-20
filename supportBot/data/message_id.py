@@ -1,7 +1,7 @@
 import sqlalchemy
 from .db_session import SqlAlchemyBase
 
-
+# таблица всех id сообщений для одного вопроса (необходима для корректного редактирования отвеченных вопросов)
 class MessageId(SqlAlchemyBase):
     __tablename__ = "message_ids"
 

@@ -4,6 +4,7 @@ from data import db_session
 from data.moderators import Moderator
 
 
+# фильтр, является ли пользователь модератором
 class ModeratorFilter(BaseFilter):
     async def __call__(self, message: Message) -> bool:
         session = db_session.create_session()

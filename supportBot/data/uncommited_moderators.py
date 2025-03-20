@@ -2,6 +2,7 @@ import sqlalchemy
 from .db_session import SqlAlchemyBase
 
 
+# таблица модераторов, которые еще не зашли в бота
 class UncommitedModerator(SqlAlchemyBase):
     __tablename__ = "uncommited_moderators"
 
