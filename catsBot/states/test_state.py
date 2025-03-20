@@ -1,7 +1,7 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class TestStates(StatesGroup):
+class TestStates(StatesGroup):  # состояние теста
     question1 = State()
     question2 = State()
     question3 = State()

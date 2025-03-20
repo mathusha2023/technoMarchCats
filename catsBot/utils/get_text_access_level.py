@@ -1,4 +1,4 @@
-def get_text_access_level(access_level):
+def get_text_access_level(access_level):  # проверка уровня доступа пользователя
     if access_level == 1:
         return "пользователь"
     elif access_level == 2:

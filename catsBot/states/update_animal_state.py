@@ -1,7 +1,7 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class UpdateAnimalStates(StatesGroup):
+class UpdateAnimalStates(StatesGroup):  # состояние для изменения животного
     index_input = State()
     choose_change_param = State()
     naming = State()
