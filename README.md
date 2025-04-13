@@ -39,8 +39,7 @@ BOT_TOKEN=[Your bot token]
 ADMIN_ID=[Your telegram id]
 ```
 
-* используйте команды
+* используйте команду
 ```
-docker-compose build
-docker-compose up
+docker-compose up --build
 ```
